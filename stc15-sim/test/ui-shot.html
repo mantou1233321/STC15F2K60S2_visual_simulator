@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>UI 截图辅助页</title>
+<style>html,body{margin:0;background:#0e131b}iframe{border:0;display:block}</style></head>
+<body>
+<!-- 用法： ui-shot.html?space=sfr&hover=208&w=1700&h=1150 -->
+<iframe id="f"></iframe>
+<script>
+var q = new URLSearchParams(location.search);
+var space = q.get('space') || 'iram';
+var hover = q.get('hover');
+var w = +(q.get('w') || 1700), h = +(q.get('h') || 1150);
+var f = document.getElementById('f');
+f.width = w; f.height = h;
+f.src = '../index.html#' + space;
+f.addEventListener('load', function () {
+  setTimeout(function () {
+    var doc = f.contentDocument, win = f.contentWindow;
+    if (!doc) return;
+    if (q.get('scroll') === 'bottom') win.scrollTo(0, doc.documentElement.scrollHeight);
+    if (q.get('demo') === 'sfrac') {
+      doc.getElementById('source').value = 'ORG 0\nMOV A,#03H\nADD A,#05H\nMOV 0AAH,A\nSJMP $\nEND';
+      doc.getElementById('btnAsm').click();
+      for (var i = 0; i < 3; i++) doc.getElementById('btnStep').click();
+      doc.querySelector('.tab[data-space="sfr"]').click();
+    }
+    if (q.get('demo') === 'novector') {
+      doc.getElementById('source').value = [
+        '        ORG 0030H',
+        '        MOV SP, #60H',
+        '        MOV R0, #50H',
+        'CZX:',
+        '        MOV A, 20H',
+        '        LCALL PTDS',
+        '        MOV A, 21H',
+        '        LCALL PTDS',
+        '        SJMP $',
+        'PTDS:   MOV @R0,A',
+        '        INC R0',
+        '        RET',
+        '        END'
+      ].join('\n');
+      doc.getElementById('btnAsm').click();
+    }
+    if (q.get('demo') === 'long') {
+      // 生成较长的程序，让编辑器/清单都出现滚动条（用于校验深色滚动条样式）
+      var lines = ['; 长程序（用于滚动条样式校验）', '        ORG 0000H', '        LJMP START', '        ORG 0030H', 'START:  MOV SP,#60H'];
+      for (var m = 0; m < 26; m++) {
+        var h = (m % 16).toString(16).toUpperCase();
+        lines.push('L' + (m < 10 ? '0' : '') + m + ':    MOV A,#0' + h + 'H');   // 注意 A51 要求以数字开头
+        lines.push('        ADD A,#0' + (m % 8) + 'H');
+        lines.push('        MOV R' + (m % 8) + ',A');
+      }
+      lines.push('        SJMP $');
+      lines.push('        END');
+      doc.getElementById('source').value = lines.join('\n');
+      doc.getElementById('btnAsm').click();
+    }
+    if (q.get('demo') === 'erase') {
+      doc.getElementById('btnAsm').click();
+      doc.querySelector('.tab[data-space="flash"]').click();
+      doc.getElementById('fErase').click();   // 第一次：进入待确认
+      doc.getElementById('fErase').click();   // 第二次：真正擦除
+    }
+    if (q.get('demo') === 'movc') {
+      doc.getElementById('source').value = [
+        '; MOVC 查表演示',
+        '        ORG 0000H',
+        '        MOV DPTR,#TAB        ; DPTR 指向表首',
+        '        MOV A,#2             ; A = 表内偏移',
+        '        MOVC A,@A+DPTR       ; 读 代码空间[TAB+2]',
+        '        MOV 40H,A',
+        '        SJMP $',
+        'TAB:    DB 11H,22H,33H,44H',
+        '        END'
+      ].join('\n');
+      doc.getElementById('btnAsm').click();
+      for (var j = 0; j < 3; j++) doc.getElementById('btnStep').click();
+    }
+    if (q.get('radix') === 'dec') doc.querySelector('.radix-btn[data-radix="dec"]').click();
+    if (hover !== null) {
+      var cell = doc.querySelector('#grid-' + space + ' .cell[data-a="' + hover + '"]');
+      if (cell) {
+        var r = cell.getBoundingClientRect();
+        cell.dispatchEvent(new win.MouseEvent('mousemove', {
+          bubbles: true,
+          clientX: r.left + r.width / 2,
+          clientY: r.top + r.height / 2
+        }));
+      }
+    }
+  }, 500);
+});
+</script>
+</body>
+</html>

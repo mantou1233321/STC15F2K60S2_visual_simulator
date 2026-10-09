@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>空源码载入最小复现</title></head>
+<body>
+<iframe id="f" src="../index.html" style="width:1200px;height:700px"></iframe>
+<pre id="out">RUNNING</pre>
+<script>
+window.addEventListener('load', function () {
+  setTimeout(function () {
+    var doc = document.getElementById('f').contentDocument, win = document.getElementById('f').contentWindow;
+    var L = [];
+    function dump(tag) {
+      var src = doc.getElementById('source');
+      L.push('--- ' + tag + ' ---');
+      L.push('  source.value.length = ' + src.value.length + '  前 30 字: ' + JSON.stringify(src.value.slice(0, 30)));
+      L.push('  asmStatus = ' + doc.getElementById('asmStatus').textContent);
+      L.push('  codeInfo  = ' + doc.getElementById('codeInfo').textContent);
+      L.push('  listing 子元素: ' + doc.getElementById('listing').children.length +
+             '  .listing-row=' + doc.querySelectorAll('.listing-row').length +
+             '  .listing-empty=' + doc.querySelectorAll('.listing-empty').length);
+      L.push('  消息: err=' + doc.querySelectorAll('.msg-err').length +
+             ' warn=' + doc.querySelectorAll('.msg-warn').length +
+             ' info=' + doc.querySelectorAll('.msg-info').length +
+             ' ok=' + doc.querySelectorAll('.msg-ok').length);
+      L.push('  msgBox 文本: ' + doc.getElementById('msgBox').textContent.trim().slice(0, 90));
+    }
+    // 1) 先载入一个正常程序
+    doc.getElementById('source').value = 'ORG 0000H\nLJMP START\nORG 0030H\nSTART: MOV A,#1\nSJMP $\nEND';
+    doc.getElementById('btnAsm').click();
+    dump('1 载入正常程序后');
+    // 2) 清空编辑区再载入（用户反馈的场景）
+    doc.getElementById('source').value = '';
+    dump('2 清空编辑区（未点载入）');
+    doc.getElementById('btnAsm').click();
+    dump('3 空源码点载入后');
+    // 4) 只写注释
+    doc.getElementById('source').value = '; 只有注释\n';
+    doc.getElementById('btnAsm').click();
+    dump('4 只有注释点载入后');
+    // 5) 汇编失败
+    doc.getElementById('source').value = 'ORG 0\nLCALL PTDS\nEND';
+    doc.getElementById('btnAsm').click();
+    dump('5 汇编失败后（PTDS 未定义）');
+    document.getElementById('out').textContent = 'REPRO-RESULT\n' + L.join('\n');
+  }, 800);
+});
+</script>
+</body>
+</html>

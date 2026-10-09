@@ -1,0 +1,2777 @@
+{
+ "about": {
+  "name": "8051 (MCS-51) complete opcode table",
+  "description": "All 256 opcodes of the Intel MCS-51 (8051) instruction set. Top level is an object; the 256 entries are in the \"opcodes\" array, ordered by decimal opcode 0..255.",
+  "notation": {
+   "operands": "comma separated. Tokens: A B C AB DPTR R0..R7 Rn @R0 @R1 @Ri @DPTR @A+DPTR @A+PC direct bit /bit rel addr11 addr16 #immed #immed16. Note: the table lists every concrete opcode, so register/indirect forms are expanded (R0..R7, @R0, @R1) rather than left as Rn/@Ri.",
+   "bytes": "instruction length in bytes including the opcode",
+   "cycles": "standard 8051 machine cycles (12 oscillator clocks each). null only for the reserved opcode.",
+   "flags": "PSW flags affected by the instruction: CY, AC, OV, P. Empty array = no PSW flag affected."
+  },
+  "sources": [
+   "https://www.keil.com/support/man/docs/is51/is51_opcodes.asp",
+   "https://www.keil.com/dd/docs/datashts/actel/8051ds-adv.pdf",
+   "https://ww1.microchip.com/downloads/en/DeviceDoc/doc4316.pdf",
+   "https://www.bitsavers.org/components/intel/8051/MCS-51_Users_Manual_Jan81.pdf",
+   "https://mirrorservice.org/sites/www.bitsavers.org/components/intel/_dataBooks/1988_Intel_Embedded_Controller_Handbook_Volume_I_8-Bit.pdf",
+   "https://www.win.tue.nl/~aeb/comp/8051/set8051.html",
+   "https://raw.githubusercontent.com/mikeakohn/naken_asm/master/table/8051.cpp"
+  ],
+  "generated_by": "research/build_final.py"
+ },
+ "stats": {
+  "total": 256,
+  "reserved": [
+   165
+  ],
+  "undefined_or_incomplete": [],
+  "bytes_distribution": {
+   "1": 140,
+   "2": 91,
+   "3": 24,
+   "None": 1
+  },
+  "cycles_distribution": {
+   "1": 161,
+   "2": 92,
+   "4": 2,
+   "None": 1
+  },
+  "distinct_mnemonics": 44,
+  "mnemonic_list": [
+   "ACALL",
+   "ADD",
+   "ADDC",
+   "AJMP",
+   "ANL",
+   "CJNE",
+   "CLR",
+   "CPL",
+   "DA",
+   "DEC",
+   "DIV",
+   "DJNZ",
+   "INC",
+   "JB",
+   "JBC",
+   "JC",
+   "JMP",
+   "JNB",
+   "JNC",
+   "JNZ",
+   "JZ",
+   "LCALL",
+   "LJMP",
+   "MOV",
+   "MOVC",
+   "MOVX",
+   "MUL",
+   "NOP",
+   "ORL",
+   "POP",
+   "PUSH",
+   "RET",
+   "RETI",
+   "RL",
+   "RLC",
+   "RR",
+   "RRC",
+   "SETB",
+   "SJMP",
+   "SUBB",
+   "SWAP",
+   "XCH",
+   "XCHD",
+   "XRL"
+  ]
+ },
+ "opcodes": [
+  {
+   "op": 0,
+   "mnemonic": "NOP",
+   "operands": "",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "空操作（占 1 个机器周期）"
+  },
+  {
+   "op": 1,
+   "mnemonic": "AJMP",
+   "operands": "addr11",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "绝对跳转（11 位目标地址，2KB 页内）"
+  },
+  {
+   "op": 2,
+   "mnemonic": "LJMP",
+   "operands": "addr16",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [],
+   "cn": "长跳转（16 位目标地址，64KB 空间内）"
+  },
+  {
+   "op": 3,
+   "mnemonic": "RR",
+   "operands": "A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "循环右移（累加器 A，不含进位）"
+  },
+  {
+   "op": 4,
+   "mnemonic": "INC",
+   "operands": "A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "加 1（字节或数据指针 DPTR 加 1）"
+  },
+  {
+   "op": 5,
+   "mnemonic": "INC",
+   "operands": "direct",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "加 1（字节或数据指针 DPTR 加 1）"
+  },
+  {
+   "op": 6,
+   "mnemonic": "INC",
+   "operands": "@R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "加 1（字节或数据指针 DPTR 加 1）"
+  },
+  {
+   "op": 7,
+   "mnemonic": "INC",
+   "operands": "@R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "加 1（字节或数据指针 DPTR 加 1）"
+  },
+  {
+   "op": 8,
+   "mnemonic": "INC",
+   "operands": "R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "加 1（字节或数据指针 DPTR 加 1）"
+  },
+  {
+   "op": 9,
+   "mnemonic": "INC",
+   "operands": "R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "加 1（字节或数据指针 DPTR 加 1）"
+  },
+  {
+   "op": 10,
+   "mnemonic": "INC",
+   "operands": "R2",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "加 1（字节或数据指针 DPTR 加 1）"
+  },
+  {
+   "op": 11,
+   "mnemonic": "INC",
+   "operands": "R3",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "加 1（字节或数据指针 DPTR 加 1）"
+  },
+  {
+   "op": 12,
+   "mnemonic": "INC",
+   "operands": "R4",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "加 1（字节或数据指针 DPTR 加 1）"
+  },
+  {
+   "op": 13,
+   "mnemonic": "INC",
+   "operands": "R5",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "加 1（字节或数据指针 DPTR 加 1）"
+  },
+  {
+   "op": 14,
+   "mnemonic": "INC",
+   "operands": "R6",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "加 1（字节或数据指针 DPTR 加 1）"
+  },
+  {
+   "op": 15,
+   "mnemonic": "INC",
+   "operands": "R7",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "加 1（字节或数据指针 DPTR 加 1）"
+  },
+  {
+   "op": 16,
+   "mnemonic": "JBC",
+   "operands": "bit,rel",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [],
+   "cn": "位为 1 则转移并清零该位"
+  },
+  {
+   "op": 17,
+   "mnemonic": "ACALL",
+   "operands": "addr11",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "绝对调用子程序（11 位目标地址，2KB 页内）"
+  },
+  {
+   "op": 18,
+   "mnemonic": "LCALL",
+   "operands": "addr16",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [],
+   "cn": "长调用子程序（16 位目标地址，64KB 空间内）"
+  },
+  {
+   "op": 19,
+   "mnemonic": "RRC",
+   "operands": "A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "P"
+   ],
+   "cn": "带进位循环右移（累加器 A）"
+  },
+  {
+   "op": 20,
+   "mnemonic": "DEC",
+   "operands": "A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "减 1（字节减 1，不影响标志）"
+  },
+  {
+   "op": 21,
+   "mnemonic": "DEC",
+   "operands": "direct",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "减 1（字节减 1，不影响标志）"
+  },
+  {
+   "op": 22,
+   "mnemonic": "DEC",
+   "operands": "@R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "减 1（字节减 1，不影响标志）"
+  },
+  {
+   "op": 23,
+   "mnemonic": "DEC",
+   "operands": "@R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "减 1（字节减 1，不影响标志）"
+  },
+  {
+   "op": 24,
+   "mnemonic": "DEC",
+   "operands": "R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "减 1（字节减 1，不影响标志）"
+  },
+  {
+   "op": 25,
+   "mnemonic": "DEC",
+   "operands": "R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "减 1（字节减 1，不影响标志）"
+  },
+  {
+   "op": 26,
+   "mnemonic": "DEC",
+   "operands": "R2",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "减 1（字节减 1，不影响标志）"
+  },
+  {
+   "op": 27,
+   "mnemonic": "DEC",
+   "operands": "R3",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "减 1（字节减 1，不影响标志）"
+  },
+  {
+   "op": 28,
+   "mnemonic": "DEC",
+   "operands": "R4",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "减 1（字节减 1，不影响标志）"
+  },
+  {
+   "op": 29,
+   "mnemonic": "DEC",
+   "operands": "R5",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "减 1（字节减 1，不影响标志）"
+  },
+  {
+   "op": 30,
+   "mnemonic": "DEC",
+   "operands": "R6",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "减 1（字节减 1，不影响标志）"
+  },
+  {
+   "op": 31,
+   "mnemonic": "DEC",
+   "operands": "R7",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "减 1（字节减 1，不影响标志）"
+  },
+  {
+   "op": 32,
+   "mnemonic": "JB",
+   "operands": "bit,rel",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [],
+   "cn": "位为 1 则转移"
+  },
+  {
+   "op": 33,
+   "mnemonic": "AJMP",
+   "operands": "addr11",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "绝对跳转（11 位目标地址，2KB 页内）"
+  },
+  {
+   "op": 34,
+   "mnemonic": "RET",
+   "operands": "",
+   "bytes": 1,
+   "cycles": 2,
+   "flags": [],
+   "cn": "子程序返回"
+  },
+  {
+   "op": 35,
+   "mnemonic": "RL",
+   "operands": "A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "循环左移（累加器 A，不含进位）"
+  },
+  {
+   "op": 36,
+   "mnemonic": "ADD",
+   "operands": "A,#immed",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "加法：累加器 A 加上源操作数，结果送回 A"
+  },
+  {
+   "op": 37,
+   "mnemonic": "ADD",
+   "operands": "A,direct",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "加法：累加器 A 加上源操作数，结果送回 A"
+  },
+  {
+   "op": 38,
+   "mnemonic": "ADD",
+   "operands": "A,@R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "加法：累加器 A 加上源操作数，结果送回 A"
+  },
+  {
+   "op": 39,
+   "mnemonic": "ADD",
+   "operands": "A,@R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "加法：累加器 A 加上源操作数，结果送回 A"
+  },
+  {
+   "op": 40,
+   "mnemonic": "ADD",
+   "operands": "A,R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "加法：累加器 A 加上源操作数，结果送回 A"
+  },
+  {
+   "op": 41,
+   "mnemonic": "ADD",
+   "operands": "A,R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "加法：累加器 A 加上源操作数，结果送回 A"
+  },
+  {
+   "op": 42,
+   "mnemonic": "ADD",
+   "operands": "A,R2",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "加法：累加器 A 加上源操作数，结果送回 A"
+  },
+  {
+   "op": 43,
+   "mnemonic": "ADD",
+   "operands": "A,R3",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "加法：累加器 A 加上源操作数，结果送回 A"
+  },
+  {
+   "op": 44,
+   "mnemonic": "ADD",
+   "operands": "A,R4",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "加法：累加器 A 加上源操作数，结果送回 A"
+  },
+  {
+   "op": 45,
+   "mnemonic": "ADD",
+   "operands": "A,R5",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "加法：累加器 A 加上源操作数，结果送回 A"
+  },
+  {
+   "op": 46,
+   "mnemonic": "ADD",
+   "operands": "A,R6",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "加法：累加器 A 加上源操作数，结果送回 A"
+  },
+  {
+   "op": 47,
+   "mnemonic": "ADD",
+   "operands": "A,R7",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "加法：累加器 A 加上源操作数，结果送回 A"
+  },
+  {
+   "op": 48,
+   "mnemonic": "JNB",
+   "operands": "bit,rel",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [],
+   "cn": "位为 0 则转移"
+  },
+  {
+   "op": 49,
+   "mnemonic": "ACALL",
+   "operands": "addr11",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "绝对调用子程序（11 位目标地址，2KB 页内）"
+  },
+  {
+   "op": 50,
+   "mnemonic": "RETI",
+   "operands": "",
+   "bytes": 1,
+   "cycles": 2,
+   "flags": [],
+   "cn": "中断服务程序返回（同时清中断优先级触发器）"
+  },
+  {
+   "op": 51,
+   "mnemonic": "RLC",
+   "operands": "A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "P"
+   ],
+   "cn": "带进位循环左移（累加器 A）"
+  },
+  {
+   "op": 52,
+   "mnemonic": "ADDC",
+   "operands": "A,#immed",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带进位加法：A + 源操作数 + CY，结果送回 A"
+  },
+  {
+   "op": 53,
+   "mnemonic": "ADDC",
+   "operands": "A,direct",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带进位加法：A + 源操作数 + CY，结果送回 A"
+  },
+  {
+   "op": 54,
+   "mnemonic": "ADDC",
+   "operands": "A,@R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带进位加法：A + 源操作数 + CY，结果送回 A"
+  },
+  {
+   "op": 55,
+   "mnemonic": "ADDC",
+   "operands": "A,@R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带进位加法：A + 源操作数 + CY，结果送回 A"
+  },
+  {
+   "op": 56,
+   "mnemonic": "ADDC",
+   "operands": "A,R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带进位加法：A + 源操作数 + CY，结果送回 A"
+  },
+  {
+   "op": 57,
+   "mnemonic": "ADDC",
+   "operands": "A,R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带进位加法：A + 源操作数 + CY，结果送回 A"
+  },
+  {
+   "op": 58,
+   "mnemonic": "ADDC",
+   "operands": "A,R2",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带进位加法：A + 源操作数 + CY，结果送回 A"
+  },
+  {
+   "op": 59,
+   "mnemonic": "ADDC",
+   "operands": "A,R3",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带进位加法：A + 源操作数 + CY，结果送回 A"
+  },
+  {
+   "op": 60,
+   "mnemonic": "ADDC",
+   "operands": "A,R4",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带进位加法：A + 源操作数 + CY，结果送回 A"
+  },
+  {
+   "op": 61,
+   "mnemonic": "ADDC",
+   "operands": "A,R5",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带进位加法：A + 源操作数 + CY，结果送回 A"
+  },
+  {
+   "op": 62,
+   "mnemonic": "ADDC",
+   "operands": "A,R6",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带进位加法：A + 源操作数 + CY，结果送回 A"
+  },
+  {
+   "op": 63,
+   "mnemonic": "ADDC",
+   "operands": "A,R7",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带进位加法：A + 源操作数 + CY，结果送回 A"
+  },
+  {
+   "op": 64,
+   "mnemonic": "JC",
+   "operands": "rel",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "进位标志 CY=1 则转移"
+  },
+  {
+   "op": 65,
+   "mnemonic": "AJMP",
+   "operands": "addr11",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "绝对跳转（11 位目标地址，2KB 页内）"
+  },
+  {
+   "op": 66,
+   "mnemonic": "ORL",
+   "operands": "direct,A",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "逻辑或（按位或）"
+  },
+  {
+   "op": 67,
+   "mnemonic": "ORL",
+   "operands": "direct,#immed",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [],
+   "cn": "逻辑或（按位或）"
+  },
+  {
+   "op": 68,
+   "mnemonic": "ORL",
+   "operands": "A,#immed",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑或（按位或）"
+  },
+  {
+   "op": 69,
+   "mnemonic": "ORL",
+   "operands": "A,direct",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑或（按位或）"
+  },
+  {
+   "op": 70,
+   "mnemonic": "ORL",
+   "operands": "A,@R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑或（按位或）"
+  },
+  {
+   "op": 71,
+   "mnemonic": "ORL",
+   "operands": "A,@R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑或（按位或）"
+  },
+  {
+   "op": 72,
+   "mnemonic": "ORL",
+   "operands": "A,R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑或（按位或）"
+  },
+  {
+   "op": 73,
+   "mnemonic": "ORL",
+   "operands": "A,R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑或（按位或）"
+  },
+  {
+   "op": 74,
+   "mnemonic": "ORL",
+   "operands": "A,R2",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑或（按位或）"
+  },
+  {
+   "op": 75,
+   "mnemonic": "ORL",
+   "operands": "A,R3",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑或（按位或）"
+  },
+  {
+   "op": 76,
+   "mnemonic": "ORL",
+   "operands": "A,R4",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑或（按位或）"
+  },
+  {
+   "op": 77,
+   "mnemonic": "ORL",
+   "operands": "A,R5",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑或（按位或）"
+  },
+  {
+   "op": 78,
+   "mnemonic": "ORL",
+   "operands": "A,R6",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑或（按位或）"
+  },
+  {
+   "op": 79,
+   "mnemonic": "ORL",
+   "operands": "A,R7",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑或（按位或）"
+  },
+  {
+   "op": 80,
+   "mnemonic": "JNC",
+   "operands": "rel",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "进位标志 CY=0 则转移"
+  },
+  {
+   "op": 81,
+   "mnemonic": "ACALL",
+   "operands": "addr11",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "绝对调用子程序（11 位目标地址，2KB 页内）"
+  },
+  {
+   "op": 82,
+   "mnemonic": "ANL",
+   "operands": "direct,A",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "逻辑与（按位与）"
+  },
+  {
+   "op": 83,
+   "mnemonic": "ANL",
+   "operands": "direct,#immed",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [],
+   "cn": "逻辑与（按位与）"
+  },
+  {
+   "op": 84,
+   "mnemonic": "ANL",
+   "operands": "A,#immed",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑与（按位与）"
+  },
+  {
+   "op": 85,
+   "mnemonic": "ANL",
+   "operands": "A,direct",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑与（按位与）"
+  },
+  {
+   "op": 86,
+   "mnemonic": "ANL",
+   "operands": "A,@R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑与（按位与）"
+  },
+  {
+   "op": 87,
+   "mnemonic": "ANL",
+   "operands": "A,@R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑与（按位与）"
+  },
+  {
+   "op": 88,
+   "mnemonic": "ANL",
+   "operands": "A,R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑与（按位与）"
+  },
+  {
+   "op": 89,
+   "mnemonic": "ANL",
+   "operands": "A,R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑与（按位与）"
+  },
+  {
+   "op": 90,
+   "mnemonic": "ANL",
+   "operands": "A,R2",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑与（按位与）"
+  },
+  {
+   "op": 91,
+   "mnemonic": "ANL",
+   "operands": "A,R3",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑与（按位与）"
+  },
+  {
+   "op": 92,
+   "mnemonic": "ANL",
+   "operands": "A,R4",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑与（按位与）"
+  },
+  {
+   "op": 93,
+   "mnemonic": "ANL",
+   "operands": "A,R5",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑与（按位与）"
+  },
+  {
+   "op": 94,
+   "mnemonic": "ANL",
+   "operands": "A,R6",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑与（按位与）"
+  },
+  {
+   "op": 95,
+   "mnemonic": "ANL",
+   "operands": "A,R7",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑与（按位与）"
+  },
+  {
+   "op": 96,
+   "mnemonic": "JZ",
+   "operands": "rel",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "累加器 A 为 0 则转移"
+  },
+  {
+   "op": 97,
+   "mnemonic": "AJMP",
+   "operands": "addr11",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "绝对跳转（11 位目标地址，2KB 页内）"
+  },
+  {
+   "op": 98,
+   "mnemonic": "XRL",
+   "operands": "direct,A",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "逻辑异或（按位异或）"
+  },
+  {
+   "op": 99,
+   "mnemonic": "XRL",
+   "operands": "direct,#immed",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [],
+   "cn": "逻辑异或（按位异或）"
+  },
+  {
+   "op": 100,
+   "mnemonic": "XRL",
+   "operands": "A,#immed",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑异或（按位异或）"
+  },
+  {
+   "op": 101,
+   "mnemonic": "XRL",
+   "operands": "A,direct",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑异或（按位异或）"
+  },
+  {
+   "op": 102,
+   "mnemonic": "XRL",
+   "operands": "A,@R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑异或（按位异或）"
+  },
+  {
+   "op": 103,
+   "mnemonic": "XRL",
+   "operands": "A,@R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑异或（按位异或）"
+  },
+  {
+   "op": 104,
+   "mnemonic": "XRL",
+   "operands": "A,R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑异或（按位异或）"
+  },
+  {
+   "op": 105,
+   "mnemonic": "XRL",
+   "operands": "A,R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑异或（按位异或）"
+  },
+  {
+   "op": 106,
+   "mnemonic": "XRL",
+   "operands": "A,R2",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑异或（按位异或）"
+  },
+  {
+   "op": 107,
+   "mnemonic": "XRL",
+   "operands": "A,R3",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑异或（按位异或）"
+  },
+  {
+   "op": 108,
+   "mnemonic": "XRL",
+   "operands": "A,R4",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑异或（按位异或）"
+  },
+  {
+   "op": 109,
+   "mnemonic": "XRL",
+   "operands": "A,R5",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑异或（按位异或）"
+  },
+  {
+   "op": 110,
+   "mnemonic": "XRL",
+   "operands": "A,R6",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑异或（按位异或）"
+  },
+  {
+   "op": 111,
+   "mnemonic": "XRL",
+   "operands": "A,R7",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "逻辑异或（按位异或）"
+  },
+  {
+   "op": 112,
+   "mnemonic": "JNZ",
+   "operands": "rel",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "累加器 A 非 0 则转移"
+  },
+  {
+   "op": 113,
+   "mnemonic": "ACALL",
+   "operands": "addr11",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "绝对调用子程序（11 位目标地址，2KB 页内）"
+  },
+  {
+   "op": 114,
+   "mnemonic": "ORL",
+   "operands": "C,bit",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [
+    "CY"
+   ],
+   "cn": "逻辑或（按位或）"
+  },
+  {
+   "op": 115,
+   "mnemonic": "JMP",
+   "operands": "@A+DPTR",
+   "bytes": 1,
+   "cycles": 2,
+   "flags": [],
+   "cn": "间接转移 @A+DPTR（多分支跳转表）"
+  },
+  {
+   "op": 116,
+   "mnemonic": "MOV",
+   "operands": "A,#immed",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 117,
+   "mnemonic": "MOV",
+   "operands": "direct,#immed",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 118,
+   "mnemonic": "MOV",
+   "operands": "@R0,#immed",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 119,
+   "mnemonic": "MOV",
+   "operands": "@R1,#immed",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 120,
+   "mnemonic": "MOV",
+   "operands": "R0,#immed",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 121,
+   "mnemonic": "MOV",
+   "operands": "R1,#immed",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 122,
+   "mnemonic": "MOV",
+   "operands": "R2,#immed",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 123,
+   "mnemonic": "MOV",
+   "operands": "R3,#immed",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 124,
+   "mnemonic": "MOV",
+   "operands": "R4,#immed",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 125,
+   "mnemonic": "MOV",
+   "operands": "R5,#immed",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 126,
+   "mnemonic": "MOV",
+   "operands": "R6,#immed",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 127,
+   "mnemonic": "MOV",
+   "operands": "R7,#immed",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 128,
+   "mnemonic": "SJMP",
+   "operands": "rel",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "短转移（相对偏移 rel）"
+  },
+  {
+   "op": 129,
+   "mnemonic": "AJMP",
+   "operands": "addr11",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "绝对跳转（11 位目标地址，2KB 页内）"
+  },
+  {
+   "op": 130,
+   "mnemonic": "ANL",
+   "operands": "C,bit",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [
+    "CY"
+   ],
+   "cn": "逻辑与（按位与）"
+  },
+  {
+   "op": 131,
+   "mnemonic": "MOVC",
+   "operands": "A,@A+PC",
+   "bytes": 1,
+   "cycles": 2,
+   "flags": [
+    "P"
+   ],
+   "cn": "读程序存储器（查表：@A+DPTR 或 @A+PC）"
+  },
+  {
+   "op": 132,
+   "mnemonic": "DIV",
+   "operands": "AB",
+   "bytes": 1,
+   "cycles": 4,
+   "flags": [
+    "CY",
+    "OV",
+    "P"
+   ],
+   "cn": "除法：A ÷ B，商在 A，余数在 B（当 B=0 时 OV=1）"
+  },
+  {
+   "op": 133,
+   "mnemonic": "MOV",
+   "operands": "direct,direct",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 134,
+   "mnemonic": "MOV",
+   "operands": "direct,@R0",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 135,
+   "mnemonic": "MOV",
+   "operands": "direct,@R1",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 136,
+   "mnemonic": "MOV",
+   "operands": "direct,R0",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 137,
+   "mnemonic": "MOV",
+   "operands": "direct,R1",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 138,
+   "mnemonic": "MOV",
+   "operands": "direct,R2",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 139,
+   "mnemonic": "MOV",
+   "operands": "direct,R3",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 140,
+   "mnemonic": "MOV",
+   "operands": "direct,R4",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 141,
+   "mnemonic": "MOV",
+   "operands": "direct,R5",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 142,
+   "mnemonic": "MOV",
+   "operands": "direct,R6",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 143,
+   "mnemonic": "MOV",
+   "operands": "direct,R7",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 144,
+   "mnemonic": "MOV",
+   "operands": "DPTR,#immed",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 145,
+   "mnemonic": "ACALL",
+   "operands": "addr11",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "绝对调用子程序（11 位目标地址，2KB 页内）"
+  },
+  {
+   "op": 146,
+   "mnemonic": "MOV",
+   "operands": "bit,C",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 147,
+   "mnemonic": "MOVC",
+   "operands": "A,@A+DPTR",
+   "bytes": 1,
+   "cycles": 2,
+   "flags": [
+    "P"
+   ],
+   "cn": "读程序存储器（查表：@A+DPTR 或 @A+PC）"
+  },
+  {
+   "op": 148,
+   "mnemonic": "SUBB",
+   "operands": "A,#immed",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带借位减法：A − 源操作数 − CY，结果送回 A"
+  },
+  {
+   "op": 149,
+   "mnemonic": "SUBB",
+   "operands": "A,direct",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带借位减法：A − 源操作数 − CY，结果送回 A"
+  },
+  {
+   "op": 150,
+   "mnemonic": "SUBB",
+   "operands": "A,@R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带借位减法：A − 源操作数 − CY，结果送回 A"
+  },
+  {
+   "op": 151,
+   "mnemonic": "SUBB",
+   "operands": "A,@R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带借位减法：A − 源操作数 − CY，结果送回 A"
+  },
+  {
+   "op": 152,
+   "mnemonic": "SUBB",
+   "operands": "A,R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带借位减法：A − 源操作数 − CY，结果送回 A"
+  },
+  {
+   "op": 153,
+   "mnemonic": "SUBB",
+   "operands": "A,R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带借位减法：A − 源操作数 − CY，结果送回 A"
+  },
+  {
+   "op": 154,
+   "mnemonic": "SUBB",
+   "operands": "A,R2",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带借位减法：A − 源操作数 − CY，结果送回 A"
+  },
+  {
+   "op": 155,
+   "mnemonic": "SUBB",
+   "operands": "A,R3",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带借位减法：A − 源操作数 − CY，结果送回 A"
+  },
+  {
+   "op": 156,
+   "mnemonic": "SUBB",
+   "operands": "A,R4",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带借位减法：A − 源操作数 − CY，结果送回 A"
+  },
+  {
+   "op": 157,
+   "mnemonic": "SUBB",
+   "operands": "A,R5",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带借位减法：A − 源操作数 − CY，结果送回 A"
+  },
+  {
+   "op": 158,
+   "mnemonic": "SUBB",
+   "operands": "A,R6",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带借位减法：A − 源操作数 − CY，结果送回 A"
+  },
+  {
+   "op": 159,
+   "mnemonic": "SUBB",
+   "operands": "A,R7",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "AC",
+    "OV",
+    "P"
+   ],
+   "cn": "带借位减法：A − 源操作数 − CY，结果送回 A"
+  },
+  {
+   "op": 160,
+   "mnemonic": "ORL",
+   "operands": "C,/bit",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [
+    "CY"
+   ],
+   "cn": "逻辑或（按位或）"
+  },
+  {
+   "op": 161,
+   "mnemonic": "AJMP",
+   "operands": "addr11",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "绝对跳转（11 位目标地址，2KB 页内）"
+  },
+  {
+   "op": 162,
+   "mnemonic": "MOV",
+   "operands": "C,bit",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [
+    "CY"
+   ],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 163,
+   "mnemonic": "INC",
+   "operands": "DPTR",
+   "bytes": 1,
+   "cycles": 2,
+   "flags": [],
+   "cn": "加 1（字节或数据指针 DPTR 加 1）"
+  },
+  {
+   "op": 164,
+   "mnemonic": "MUL",
+   "operands": "AB",
+   "bytes": 1,
+   "cycles": 4,
+   "flags": [
+    "CY",
+    "OV",
+    "P"
+   ],
+   "cn": "乘法：A × B，16 位积高字节在 B、低字节在 A"
+  },
+  {
+   "op": 165,
+   "mnemonic": "RESERVED",
+   "operands": "",
+   "bytes": null,
+   "cycles": null,
+   "flags": [],
+   "note": "Reserved / undefined in the standard MCS-51 opcode map. Intel, Keil and Actel all leave 0xA5 undefined; Atmel notes it behaves as a 1-cycle NOP-like no-op on the original 8051. Several vendors reuse it (Philips P89C669 SFR-page prefix, M8051W/M8051EW MOVC @(DPTR++),A / TRAP)."
+  },
+  {
+   "op": 166,
+   "mnemonic": "MOV",
+   "operands": "@R0,direct",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 167,
+   "mnemonic": "MOV",
+   "operands": "@R1,direct",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 168,
+   "mnemonic": "MOV",
+   "operands": "R0,direct",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 169,
+   "mnemonic": "MOV",
+   "operands": "R1,direct",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 170,
+   "mnemonic": "MOV",
+   "operands": "R2,direct",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 171,
+   "mnemonic": "MOV",
+   "operands": "R3,direct",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 172,
+   "mnemonic": "MOV",
+   "operands": "R4,direct",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 173,
+   "mnemonic": "MOV",
+   "operands": "R5,direct",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 174,
+   "mnemonic": "MOV",
+   "operands": "R6,direct",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 175,
+   "mnemonic": "MOV",
+   "operands": "R7,direct",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 176,
+   "mnemonic": "ANL",
+   "operands": "C,/bit",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [
+    "CY"
+   ],
+   "cn": "逻辑与（按位与）"
+  },
+  {
+   "op": 177,
+   "mnemonic": "ACALL",
+   "operands": "addr11",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "绝对调用子程序（11 位目标地址，2KB 页内）"
+  },
+  {
+   "op": 178,
+   "mnemonic": "CPL",
+   "operands": "bit",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "取反：累加器 A / 进位标志 CY / 指定位"
+  },
+  {
+   "op": 179,
+   "mnemonic": "CPL",
+   "operands": "C",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY"
+   ],
+   "cn": "取反：累加器 A / 进位标志 CY / 指定位"
+  },
+  {
+   "op": 180,
+   "mnemonic": "CJNE",
+   "operands": "A,#immed,rel",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [
+    "CY"
+   ],
+   "cn": "比较不等则转移（相等则顺序执行，影响 CY）"
+  },
+  {
+   "op": 181,
+   "mnemonic": "CJNE",
+   "operands": "A,direct,rel",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [
+    "CY"
+   ],
+   "cn": "比较不等则转移（相等则顺序执行，影响 CY）"
+  },
+  {
+   "op": 182,
+   "mnemonic": "CJNE",
+   "operands": "@R0,#immed,rel",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [
+    "CY"
+   ],
+   "cn": "比较不等则转移（相等则顺序执行，影响 CY）"
+  },
+  {
+   "op": 183,
+   "mnemonic": "CJNE",
+   "operands": "@R1,#immed,rel",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [
+    "CY"
+   ],
+   "cn": "比较不等则转移（相等则顺序执行，影响 CY）"
+  },
+  {
+   "op": 184,
+   "mnemonic": "CJNE",
+   "operands": "R0,#immed,rel",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [
+    "CY"
+   ],
+   "cn": "比较不等则转移（相等则顺序执行，影响 CY）"
+  },
+  {
+   "op": 185,
+   "mnemonic": "CJNE",
+   "operands": "R1,#immed,rel",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [
+    "CY"
+   ],
+   "cn": "比较不等则转移（相等则顺序执行，影响 CY）"
+  },
+  {
+   "op": 186,
+   "mnemonic": "CJNE",
+   "operands": "R2,#immed,rel",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [
+    "CY"
+   ],
+   "cn": "比较不等则转移（相等则顺序执行，影响 CY）"
+  },
+  {
+   "op": 187,
+   "mnemonic": "CJNE",
+   "operands": "R3,#immed,rel",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [
+    "CY"
+   ],
+   "cn": "比较不等则转移（相等则顺序执行，影响 CY）"
+  },
+  {
+   "op": 188,
+   "mnemonic": "CJNE",
+   "operands": "R4,#immed,rel",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [
+    "CY"
+   ],
+   "cn": "比较不等则转移（相等则顺序执行，影响 CY）"
+  },
+  {
+   "op": 189,
+   "mnemonic": "CJNE",
+   "operands": "R5,#immed,rel",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [
+    "CY"
+   ],
+   "cn": "比较不等则转移（相等则顺序执行，影响 CY）"
+  },
+  {
+   "op": 190,
+   "mnemonic": "CJNE",
+   "operands": "R6,#immed,rel",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [
+    "CY"
+   ],
+   "cn": "比较不等则转移（相等则顺序执行，影响 CY）"
+  },
+  {
+   "op": 191,
+   "mnemonic": "CJNE",
+   "operands": "R7,#immed,rel",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [
+    "CY"
+   ],
+   "cn": "比较不等则转移（相等则顺序执行，影响 CY）"
+  },
+  {
+   "op": 192,
+   "mnemonic": "PUSH",
+   "operands": "direct",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "入栈（把直接地址单元内容压入堆栈）"
+  },
+  {
+   "op": 193,
+   "mnemonic": "AJMP",
+   "operands": "addr11",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "绝对跳转（11 位目标地址，2KB 页内）"
+  },
+  {
+   "op": 194,
+   "mnemonic": "CLR",
+   "operands": "bit",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "清 0：累加器 A / 进位标志 CY / 指定位"
+  },
+  {
+   "op": 195,
+   "mnemonic": "CLR",
+   "operands": "C",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY"
+   ],
+   "cn": "清 0：累加器 A / 进位标志 CY / 指定位"
+  },
+  {
+   "op": 196,
+   "mnemonic": "SWAP",
+   "operands": "A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "累加器 A 高低半字节交换"
+  },
+  {
+   "op": 197,
+   "mnemonic": "XCH",
+   "operands": "A,direct",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "字节交换（A 与源操作数互换）"
+  },
+  {
+   "op": 198,
+   "mnemonic": "XCH",
+   "operands": "A,@R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "字节交换（A 与源操作数互换）"
+  },
+  {
+   "op": 199,
+   "mnemonic": "XCH",
+   "operands": "A,@R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "字节交换（A 与源操作数互换）"
+  },
+  {
+   "op": 200,
+   "mnemonic": "XCH",
+   "operands": "A,R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "字节交换（A 与源操作数互换）"
+  },
+  {
+   "op": 201,
+   "mnemonic": "XCH",
+   "operands": "A,R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "字节交换（A 与源操作数互换）"
+  },
+  {
+   "op": 202,
+   "mnemonic": "XCH",
+   "operands": "A,R2",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "字节交换（A 与源操作数互换）"
+  },
+  {
+   "op": 203,
+   "mnemonic": "XCH",
+   "operands": "A,R3",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "字节交换（A 与源操作数互换）"
+  },
+  {
+   "op": 204,
+   "mnemonic": "XCH",
+   "operands": "A,R4",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "字节交换（A 与源操作数互换）"
+  },
+  {
+   "op": 205,
+   "mnemonic": "XCH",
+   "operands": "A,R5",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "字节交换（A 与源操作数互换）"
+  },
+  {
+   "op": 206,
+   "mnemonic": "XCH",
+   "operands": "A,R6",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "字节交换（A 与源操作数互换）"
+  },
+  {
+   "op": 207,
+   "mnemonic": "XCH",
+   "operands": "A,R7",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "字节交换（A 与源操作数互换）"
+  },
+  {
+   "op": 208,
+   "mnemonic": "POP",
+   "operands": "direct",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "出栈（把栈顶字节送入直接地址单元）"
+  },
+  {
+   "op": 209,
+   "mnemonic": "ACALL",
+   "operands": "addr11",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "绝对调用子程序（11 位目标地址，2KB 页内）"
+  },
+  {
+   "op": 210,
+   "mnemonic": "SETB",
+   "operands": "bit",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "置 1：进位标志 CY / 指定位"
+  },
+  {
+   "op": 211,
+   "mnemonic": "SETB",
+   "operands": "C",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY"
+   ],
+   "cn": "置 1：进位标志 CY / 指定位"
+  },
+  {
+   "op": 212,
+   "mnemonic": "DA",
+   "operands": "A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "CY",
+    "P"
+   ],
+   "cn": "十进制调整（BCD 加法校正）"
+  },
+  {
+   "op": 213,
+   "mnemonic": "DJNZ",
+   "operands": "direct,rel",
+   "bytes": 3,
+   "cycles": 2,
+   "flags": [],
+   "cn": "减 1 不为 0 则转移（循环计数）"
+  },
+  {
+   "op": 214,
+   "mnemonic": "XCHD",
+   "operands": "A,@R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "低半字节交换（A 与 @Ri 的低 4 位互换）"
+  },
+  {
+   "op": 215,
+   "mnemonic": "XCHD",
+   "operands": "A,@R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "低半字节交换（A 与 @Ri 的低 4 位互换）"
+  },
+  {
+   "op": 216,
+   "mnemonic": "DJNZ",
+   "operands": "R0,rel",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "减 1 不为 0 则转移（循环计数）"
+  },
+  {
+   "op": 217,
+   "mnemonic": "DJNZ",
+   "operands": "R1,rel",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "减 1 不为 0 则转移（循环计数）"
+  },
+  {
+   "op": 218,
+   "mnemonic": "DJNZ",
+   "operands": "R2,rel",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "减 1 不为 0 则转移（循环计数）"
+  },
+  {
+   "op": 219,
+   "mnemonic": "DJNZ",
+   "operands": "R3,rel",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "减 1 不为 0 则转移（循环计数）"
+  },
+  {
+   "op": 220,
+   "mnemonic": "DJNZ",
+   "operands": "R4,rel",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "减 1 不为 0 则转移（循环计数）"
+  },
+  {
+   "op": 221,
+   "mnemonic": "DJNZ",
+   "operands": "R5,rel",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "减 1 不为 0 则转移（循环计数）"
+  },
+  {
+   "op": 222,
+   "mnemonic": "DJNZ",
+   "operands": "R6,rel",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "减 1 不为 0 则转移（循环计数）"
+  },
+  {
+   "op": 223,
+   "mnemonic": "DJNZ",
+   "operands": "R7,rel",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "减 1 不为 0 则转移（循环计数）"
+  },
+  {
+   "op": 224,
+   "mnemonic": "MOVX",
+   "operands": "A,@DPTR",
+   "bytes": 1,
+   "cycles": 2,
+   "flags": [
+    "P"
+   ],
+   "cn": "读/写片外数据存储器（@Ri 8 位地址或 @DPTR 16 位地址）"
+  },
+  {
+   "op": 225,
+   "mnemonic": "AJMP",
+   "operands": "addr11",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "绝对跳转（11 位目标地址，2KB 页内）"
+  },
+  {
+   "op": 226,
+   "mnemonic": "MOVX",
+   "operands": "A,@R0",
+   "bytes": 1,
+   "cycles": 2,
+   "flags": [
+    "P"
+   ],
+   "cn": "读/写片外数据存储器（@Ri 8 位地址或 @DPTR 16 位地址）"
+  },
+  {
+   "op": 227,
+   "mnemonic": "MOVX",
+   "operands": "A,@R1",
+   "bytes": 1,
+   "cycles": 2,
+   "flags": [
+    "P"
+   ],
+   "cn": "读/写片外数据存储器（@Ri 8 位地址或 @DPTR 16 位地址）"
+  },
+  {
+   "op": 228,
+   "mnemonic": "CLR",
+   "operands": "A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "清 0：累加器 A / 进位标志 CY / 指定位"
+  },
+  {
+   "op": 229,
+   "mnemonic": "MOV",
+   "operands": "A,direct",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 230,
+   "mnemonic": "MOV",
+   "operands": "A,@R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 231,
+   "mnemonic": "MOV",
+   "operands": "A,@R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 232,
+   "mnemonic": "MOV",
+   "operands": "A,R0",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 233,
+   "mnemonic": "MOV",
+   "operands": "A,R1",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 234,
+   "mnemonic": "MOV",
+   "operands": "A,R2",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 235,
+   "mnemonic": "MOV",
+   "operands": "A,R3",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 236,
+   "mnemonic": "MOV",
+   "operands": "A,R4",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 237,
+   "mnemonic": "MOV",
+   "operands": "A,R5",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 238,
+   "mnemonic": "MOV",
+   "operands": "A,R6",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 239,
+   "mnemonic": "MOV",
+   "operands": "A,R7",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 240,
+   "mnemonic": "MOVX",
+   "operands": "@DPTR,A",
+   "bytes": 1,
+   "cycles": 2,
+   "flags": [],
+   "cn": "读/写片外数据存储器（@Ri 8 位地址或 @DPTR 16 位地址）"
+  },
+  {
+   "op": 241,
+   "mnemonic": "ACALL",
+   "operands": "addr11",
+   "bytes": 2,
+   "cycles": 2,
+   "flags": [],
+   "cn": "绝对调用子程序（11 位目标地址，2KB 页内）"
+  },
+  {
+   "op": 242,
+   "mnemonic": "MOVX",
+   "operands": "@R0,A",
+   "bytes": 1,
+   "cycles": 2,
+   "flags": [],
+   "cn": "读/写片外数据存储器（@Ri 8 位地址或 @DPTR 16 位地址）"
+  },
+  {
+   "op": 243,
+   "mnemonic": "MOVX",
+   "operands": "@R1,A",
+   "bytes": 1,
+   "cycles": 2,
+   "flags": [],
+   "cn": "读/写片外数据存储器（@Ri 8 位地址或 @DPTR 16 位地址）"
+  },
+  {
+   "op": 244,
+   "mnemonic": "CPL",
+   "operands": "A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [
+    "P"
+   ],
+   "cn": "取反：累加器 A / 进位标志 CY / 指定位"
+  },
+  {
+   "op": 245,
+   "mnemonic": "MOV",
+   "operands": "direct,A",
+   "bytes": 2,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 246,
+   "mnemonic": "MOV",
+   "operands": "@R0,A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 247,
+   "mnemonic": "MOV",
+   "operands": "@R1,A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 248,
+   "mnemonic": "MOV",
+   "operands": "R0,A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 249,
+   "mnemonic": "MOV",
+   "operands": "R1,A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 250,
+   "mnemonic": "MOV",
+   "operands": "R2,A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 251,
+   "mnemonic": "MOV",
+   "operands": "R3,A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 252,
+   "mnemonic": "MOV",
+   "operands": "R4,A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 253,
+   "mnemonic": "MOV",
+   "operands": "R5,A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 254,
+   "mnemonic": "MOV",
+   "operands": "R6,A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  },
+  {
+   "op": 255,
+   "mnemonic": "MOV",
+   "operands": "R7,A",
+   "bytes": 1,
+   "cycles": 1,
+   "flags": [],
+   "cn": "传送数据（字节传送 / 位传送）"
+  }
+ ]
+}

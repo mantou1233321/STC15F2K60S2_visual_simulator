@@ -1,0 +1,2019 @@
+{
+  "part": "STC15F2K60S2",
+  "generated_by": "research/extract_sfr.py",
+  "addr_encoding": "addr / bit_addressable / bits[].addr are DECIMAL byte/bit addresses; addr_hex is the same byte address in hex. 8051 bit address = byte address + bit index, valid only when the SFR byte address is a multiple of 8 (0x80..0xFF).",
+  "sfr": [
+    {
+      "name": "ACC",
+      "addr": 224,
+      "addr_hex": "0xE0",
+      "bit_addressable": true,
+      "bit_addr_base": 224,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "B",
+      "addr": 240,
+      "addr_hex": "0xF0",
+      "bit_addressable": true,
+      "bit_addr_base": 240,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "PSW",
+      "addr": 208,
+      "addr_hex": "0xD0",
+      "bit_addressable": true,
+      "bit_addr_base": 208,
+      "bits": [
+        {
+          "name": "P",
+          "bit": 0,
+          "addr": 208,
+          "note": "datasheet shows PSW.0 = P, PSW.1 = reserved"
+        },
+        {
+          "name": "OV",
+          "bit": 2,
+          "addr": 210
+        },
+        {
+          "name": "RS0",
+          "bit": 3,
+          "addr": 211
+        },
+        {
+          "name": "RS1",
+          "bit": 4,
+          "addr": 212
+        },
+        {
+          "name": "F0",
+          "bit": 5,
+          "addr": 213
+        },
+        {
+          "name": "AC",
+          "bit": 6,
+          "addr": 214
+        },
+        {
+          "name": "CY",
+          "bit": 7,
+          "addr": 215
+        }
+      ],
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "SP",
+      "addr": 129,
+      "addr_hex": "0x81",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0111",
+      "reset_value": 7
+    },
+    {
+      "name": "DPL",
+      "addr": 130,
+      "addr_hex": "0x82",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "DPH",
+      "addr": 131,
+      "addr_hex": "0x83",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "P0",
+      "addr": 128,
+      "addr_hex": "0x80",
+      "bit_addressable": true,
+      "bit_addr_base": 128,
+      "bits": [
+        {
+          "name": "P00",
+          "bit": 0,
+          "addr": 128
+        },
+        {
+          "name": "P01",
+          "bit": 1,
+          "addr": 129
+        },
+        {
+          "name": "P02",
+          "bit": 2,
+          "addr": 130
+        },
+        {
+          "name": "P03",
+          "bit": 3,
+          "addr": 131
+        },
+        {
+          "name": "P04",
+          "bit": 4,
+          "addr": 132
+        },
+        {
+          "name": "P05",
+          "bit": 5,
+          "addr": 133
+        },
+        {
+          "name": "P06",
+          "bit": 6,
+          "addr": 134
+        },
+        {
+          "name": "P07",
+          "bit": 7,
+          "addr": 135
+        }
+      ],
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "1111,1111",
+      "reset_value": 255
+    },
+    {
+      "name": "P1",
+      "addr": 144,
+      "addr_hex": "0x90",
+      "bit_addressable": true,
+      "bit_addr_base": 144,
+      "bits": [
+        {
+          "name": "P10",
+          "bit": 0,
+          "addr": 144
+        },
+        {
+          "name": "P11",
+          "bit": 1,
+          "addr": 145
+        },
+        {
+          "name": "P12",
+          "bit": 2,
+          "addr": 146
+        },
+        {
+          "name": "P13",
+          "bit": 3,
+          "addr": 147
+        },
+        {
+          "name": "P14",
+          "bit": 4,
+          "addr": 148
+        },
+        {
+          "name": "P15",
+          "bit": 5,
+          "addr": 149
+        },
+        {
+          "name": "P16",
+          "bit": 6,
+          "addr": 150
+        },
+        {
+          "name": "P17",
+          "bit": 7,
+          "addr": 151
+        }
+      ],
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "1111,1111",
+      "reset_value": 255
+    },
+    {
+      "name": "P2",
+      "addr": 160,
+      "addr_hex": "0xA0",
+      "bit_addressable": true,
+      "bit_addr_base": 160,
+      "bits": [
+        {
+          "name": "P20",
+          "bit": 0,
+          "addr": 160
+        },
+        {
+          "name": "P21",
+          "bit": 1,
+          "addr": 161
+        },
+        {
+          "name": "P22",
+          "bit": 2,
+          "addr": 162
+        },
+        {
+          "name": "P23",
+          "bit": 3,
+          "addr": 163
+        },
+        {
+          "name": "P24",
+          "bit": 4,
+          "addr": 164
+        },
+        {
+          "name": "P25",
+          "bit": 5,
+          "addr": 165
+        },
+        {
+          "name": "P26",
+          "bit": 6,
+          "addr": 166
+        },
+        {
+          "name": "P27",
+          "bit": 7,
+          "addr": 167
+        }
+      ],
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "1111,1111",
+      "reset_value": 255
+    },
+    {
+      "name": "P3",
+      "addr": 176,
+      "addr_hex": "0xB0",
+      "bit_addressable": true,
+      "bit_addr_base": 176,
+      "bits": [
+        {
+          "name": "P30",
+          "bit": 0,
+          "addr": 176
+        },
+        {
+          "name": "P31",
+          "bit": 1,
+          "addr": 177
+        },
+        {
+          "name": "P32",
+          "bit": 2,
+          "addr": 178
+        },
+        {
+          "name": "P33",
+          "bit": 3,
+          "addr": 179
+        },
+        {
+          "name": "P34",
+          "bit": 4,
+          "addr": 180
+        },
+        {
+          "name": "P35",
+          "bit": 5,
+          "addr": 181
+        },
+        {
+          "name": "P36",
+          "bit": 6,
+          "addr": 182
+        },
+        {
+          "name": "P37",
+          "bit": 7,
+          "addr": 183
+        }
+      ],
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "1111,1111",
+      "reset_value": 255
+    },
+    {
+      "name": "P4",
+      "addr": 192,
+      "addr_hex": "0xC0",
+      "bit_addressable": true,
+      "bit_addr_base": 192,
+      "bits": [
+        {
+          "name": "P40",
+          "bit": 0,
+          "addr": 192
+        },
+        {
+          "name": "P41",
+          "bit": 1,
+          "addr": 193
+        },
+        {
+          "name": "P42",
+          "bit": 2,
+          "addr": 194
+        },
+        {
+          "name": "P43",
+          "bit": 3,
+          "addr": 195
+        },
+        {
+          "name": "P44",
+          "bit": 4,
+          "addr": 196
+        },
+        {
+          "name": "P45",
+          "bit": 5,
+          "addr": 197
+        },
+        {
+          "name": "P46",
+          "bit": 6,
+          "addr": 198
+        },
+        {
+          "name": "P47",
+          "bit": 7,
+          "addr": 199
+        }
+      ],
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "1111,1111",
+      "reset_value": 255
+    },
+    {
+      "name": "P5",
+      "addr": 200,
+      "addr_hex": "0xC8",
+      "bit_addressable": true,
+      "bit_addr_base": 200,
+      "bits": [
+        {
+          "name": "P50",
+          "bit": 0,
+          "addr": 200
+        },
+        {
+          "name": "P51",
+          "bit": 1,
+          "addr": 201
+        },
+        {
+          "name": "P52",
+          "bit": 2,
+          "addr": 202
+        },
+        {
+          "name": "P53",
+          "bit": 3,
+          "addr": 203
+        },
+        {
+          "name": "P54",
+          "bit": 4,
+          "addr": 204
+        },
+        {
+          "name": "P55",
+          "bit": 5,
+          "addr": 205
+        },
+        {
+          "name": "P56",
+          "bit": 6,
+          "addr": 206,
+          "available": false,
+          "note": "reserved on STC15F2K60S2 (P5 has only P5.0-P5.5)"
+        },
+        {
+          "name": "P57",
+          "bit": 7,
+          "addr": 207,
+          "available": false,
+          "note": "reserved on STC15F2K60S2 (P5 has only P5.0-P5.5)"
+        }
+      ],
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "xx11,1111",
+      "reset_value": 63
+    },
+    {
+      "name": "P6",
+      "addr": 232,
+      "addr_hex": "0xE8",
+      "bit_addressable": true,
+      "bit_addr_base": 232,
+      "bits": [
+        {
+          "name": "P60",
+          "bit": 0,
+          "addr": 232
+        },
+        {
+          "name": "P61",
+          "bit": 1,
+          "addr": 233
+        },
+        {
+          "name": "P62",
+          "bit": 2,
+          "addr": 234
+        },
+        {
+          "name": "P63",
+          "bit": 3,
+          "addr": 235
+        },
+        {
+          "name": "P64",
+          "bit": 4,
+          "addr": 236
+        },
+        {
+          "name": "P65",
+          "bit": 5,
+          "addr": 237
+        },
+        {
+          "name": "P66",
+          "bit": 6,
+          "addr": 238
+        },
+        {
+          "name": "P67",
+          "bit": 7,
+          "addr": 239
+        }
+      ],
+      "available_on_stc15f2k60s2": false,
+      "unavailable_reason": "exists in the family-wide STC15 SFR map / header, but is not implemented on STC15F2K60S2 (40/44-pin package)",
+      "reset_value_bits": "1111,1111",
+      "reset_value": 255
+    },
+    {
+      "name": "P7",
+      "addr": 248,
+      "addr_hex": "0xF8",
+      "bit_addressable": true,
+      "bit_addr_base": 248,
+      "bits": [
+        {
+          "name": "P70",
+          "bit": 0,
+          "addr": 248
+        },
+        {
+          "name": "P71",
+          "bit": 1,
+          "addr": 249
+        },
+        {
+          "name": "P72",
+          "bit": 2,
+          "addr": 250
+        },
+        {
+          "name": "P73",
+          "bit": 3,
+          "addr": 251
+        },
+        {
+          "name": "P74",
+          "bit": 4,
+          "addr": 252
+        },
+        {
+          "name": "P75",
+          "bit": 5,
+          "addr": 253
+        },
+        {
+          "name": "P76",
+          "bit": 6,
+          "addr": 254
+        },
+        {
+          "name": "P77",
+          "bit": 7,
+          "addr": 255
+        }
+      ],
+      "available_on_stc15f2k60s2": false,
+      "unavailable_reason": "exists in the family-wide STC15 SFR map / header, but is not implemented on STC15F2K60S2 (40/44-pin package)",
+      "reset_value_bits": "1111,1111",
+      "reset_value": 255
+    },
+    {
+      "name": "P0M0",
+      "addr": 148,
+      "addr_hex": "0x94",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "P0M1",
+      "addr": 147,
+      "addr_hex": "0x93",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "P1M0",
+      "addr": 146,
+      "addr_hex": "0x92",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "P1M1",
+      "addr": 145,
+      "addr_hex": "0x91",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "P2M0",
+      "addr": 150,
+      "addr_hex": "0x96",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "P2M1",
+      "addr": 149,
+      "addr_hex": "0x95",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "P3M0",
+      "addr": 178,
+      "addr_hex": "0xB2",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "P3M1",
+      "addr": 177,
+      "addr_hex": "0xB1",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "P4M0",
+      "addr": 180,
+      "addr_hex": "0xB4",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "P4M1",
+      "addr": 179,
+      "addr_hex": "0xB3",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "P5M0",
+      "addr": 202,
+      "addr_hex": "0xCA",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "xxx0,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "P5M1",
+      "addr": 201,
+      "addr_hex": "0xC9",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "xxx0,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "P6M0",
+      "addr": 204,
+      "addr_hex": "0xCC",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": false,
+      "unavailable_reason": "exists in the family-wide STC15 SFR map / header, but is not implemented on STC15F2K60S2 (40/44-pin package)",
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "P6M1",
+      "addr": 203,
+      "addr_hex": "0xCB",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": false,
+      "unavailable_reason": "exists in the family-wide STC15 SFR map / header, but is not implemented on STC15F2K60S2 (40/44-pin package)",
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "P7M0",
+      "addr": 226,
+      "addr_hex": "0xE2",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": false,
+      "unavailable_reason": "exists in the family-wide STC15 SFR map / header, but is not implemented on STC15F2K60S2 (40/44-pin package)",
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "P7M1",
+      "addr": 225,
+      "addr_hex": "0xE1",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": false,
+      "unavailable_reason": "exists in the family-wide STC15 SFR map / header, but is not implemented on STC15F2K60S2 (40/44-pin package)",
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "PCON",
+      "addr": 135,
+      "addr_hex": "0x87",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0011,0000",
+      "reset_value": 48
+    },
+    {
+      "name": "AUXR",
+      "addr": 142,
+      "addr_hex": "0x8E",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0001",
+      "reset_value": 1
+    },
+    {
+      "name": "AUXR1",
+      "addr": 162,
+      "addr_hex": "0xA2",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "P_SW1",
+      "addr": 162,
+      "addr_hex": "0xA2",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "CLK_DIV",
+      "addr": 151,
+      "addr_hex": "0x97",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "BUS_SPEED",
+      "addr": 161,
+      "addr_hex": "0xA1",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "xxxx,xx10",
+      "reset_value": 2
+    },
+    {
+      "name": "P1ASF",
+      "addr": 157,
+      "addr_hex": "0x9D",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "P_SW2",
+      "addr": 186,
+      "addr_hex": "0xBA",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "xxxx,x000",
+      "reset_value": 0
+    },
+    {
+      "name": "IE",
+      "addr": 168,
+      "addr_hex": "0xA8",
+      "bit_addressable": true,
+      "bit_addr_base": 168,
+      "bits": [
+        {
+          "name": "EX0",
+          "bit": 0,
+          "addr": 168
+        },
+        {
+          "name": "ET0",
+          "bit": 1,
+          "addr": 169
+        },
+        {
+          "name": "EX1",
+          "bit": 2,
+          "addr": 170
+        },
+        {
+          "name": "ET1",
+          "bit": 3,
+          "addr": 171
+        },
+        {
+          "name": "ES",
+          "bit": 4,
+          "addr": 172
+        },
+        {
+          "name": "EADC",
+          "bit": 5,
+          "addr": 173,
+          "note": "ADC interrupt enable (STC specific); IE.5 is NOT ET2 on this part"
+        },
+        {
+          "name": "ELVD",
+          "bit": 6,
+          "addr": 174,
+          "note": "low-voltage-detect interrupt enable (STC specific; classic 8051 has no such bit)"
+        },
+        {
+          "name": "EA",
+          "bit": 7,
+          "addr": 175
+        }
+      ],
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "IP",
+      "addr": 184,
+      "addr_hex": "0xB8",
+      "bit_addressable": true,
+      "bit_addr_base": 184,
+      "bits": [
+        {
+          "name": "PX0",
+          "bit": 0,
+          "addr": 184
+        },
+        {
+          "name": "PT0",
+          "bit": 1,
+          "addr": 185
+        },
+        {
+          "name": "PX1",
+          "bit": 2,
+          "addr": 186
+        },
+        {
+          "name": "PT1",
+          "bit": 3,
+          "addr": 187
+        },
+        {
+          "name": "PS",
+          "bit": 4,
+          "addr": 188
+        },
+        {
+          "name": "PADC",
+          "bit": 5,
+          "addr": 189,
+          "note": "ADC interrupt priority"
+        },
+        {
+          "name": "PLVD",
+          "bit": 6,
+          "addr": 190,
+          "note": "low-voltage-detect interrupt priority"
+        },
+        {
+          "name": "PPCA",
+          "bit": 7,
+          "addr": 191,
+          "note": "PCA/CCP interrupt priority"
+        }
+      ],
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "IE2",
+      "addr": 175,
+      "addr_hex": "0xAF",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "x000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "IP2",
+      "addr": 181,
+      "addr_hex": "0xB5",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "xxx0,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "INT_CLKO",
+      "addr": 143,
+      "addr_hex": "0x8F",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "x000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "TCON",
+      "addr": 136,
+      "addr_hex": "0x88",
+      "bit_addressable": true,
+      "bit_addr_base": 136,
+      "bits": [
+        {
+          "name": "IT0",
+          "bit": 0,
+          "addr": 136
+        },
+        {
+          "name": "IE0",
+          "bit": 1,
+          "addr": 137
+        },
+        {
+          "name": "IT1",
+          "bit": 2,
+          "addr": 138
+        },
+        {
+          "name": "IE1",
+          "bit": 3,
+          "addr": 139
+        },
+        {
+          "name": "TR0",
+          "bit": 4,
+          "addr": 140
+        },
+        {
+          "name": "TF0",
+          "bit": 5,
+          "addr": 141
+        },
+        {
+          "name": "TR1",
+          "bit": 6,
+          "addr": 142
+        },
+        {
+          "name": "TF1",
+          "bit": 7,
+          "addr": 143
+        }
+      ],
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "TMOD",
+      "addr": 137,
+      "addr_hex": "0x89",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "TL0",
+      "addr": 138,
+      "addr_hex": "0x8A",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "TL1",
+      "addr": 139,
+      "addr_hex": "0x8B",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "TH0",
+      "addr": 140,
+      "addr_hex": "0x8C",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "TH1",
+      "addr": 141,
+      "addr_hex": "0x8D",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "T4T3M",
+      "addr": 209,
+      "addr_hex": "0xD1",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": false,
+      "unavailable_reason": "exists in the family-wide STC15 SFR map / header, but is not implemented on STC15F2K60S2 (40/44-pin package)"
+    },
+    {
+      "name": "T3T4M",
+      "addr": 209,
+      "addr_hex": "0xD1",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": false,
+      "unavailable_reason": "exists in the family-wide STC15 SFR map / header, but is not implemented on STC15F2K60S2 (40/44-pin package)"
+    },
+    {
+      "name": "T4H",
+      "addr": 210,
+      "addr_hex": "0xD2",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": false,
+      "unavailable_reason": "exists in the family-wide STC15 SFR map / header, but is not implemented on STC15F2K60S2 (40/44-pin package)"
+    },
+    {
+      "name": "T4L",
+      "addr": 211,
+      "addr_hex": "0xD3",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": false,
+      "unavailable_reason": "exists in the family-wide STC15 SFR map / header, but is not implemented on STC15F2K60S2 (40/44-pin package)"
+    },
+    {
+      "name": "T3H",
+      "addr": 212,
+      "addr_hex": "0xD4",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": false,
+      "unavailable_reason": "exists in the family-wide STC15 SFR map / header, but is not implemented on STC15F2K60S2 (40/44-pin package)"
+    },
+    {
+      "name": "T3L",
+      "addr": 213,
+      "addr_hex": "0xD5",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": false,
+      "unavailable_reason": "exists in the family-wide STC15 SFR map / header, but is not implemented on STC15F2K60S2 (40/44-pin package)"
+    },
+    {
+      "name": "T2H",
+      "addr": 214,
+      "addr_hex": "0xD6",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "T2L",
+      "addr": 215,
+      "addr_hex": "0xD7",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "WKTCL",
+      "addr": 170,
+      "addr_hex": "0xAA",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "1111,1111",
+      "reset_value": 255
+    },
+    {
+      "name": "WKTCH",
+      "addr": 171,
+      "addr_hex": "0xAB",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0111,1111",
+      "reset_value": 127
+    },
+    {
+      "name": "WDT_CONTR",
+      "addr": 193,
+      "addr_hex": "0xC1",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "SCON",
+      "addr": 152,
+      "addr_hex": "0x98",
+      "bit_addressable": true,
+      "bit_addr_base": 152,
+      "bits": [
+        {
+          "name": "RI",
+          "bit": 0,
+          "addr": 152
+        },
+        {
+          "name": "TI",
+          "bit": 1,
+          "addr": 153
+        },
+        {
+          "name": "RB8",
+          "bit": 2,
+          "addr": 154
+        },
+        {
+          "name": "TB8",
+          "bit": 3,
+          "addr": 155
+        },
+        {
+          "name": "REN",
+          "bit": 4,
+          "addr": 156
+        },
+        {
+          "name": "SM2",
+          "bit": 5,
+          "addr": 157
+        },
+        {
+          "name": "SM1",
+          "bit": 6,
+          "addr": 158
+        },
+        {
+          "name": "SM0",
+          "bit": 7,
+          "addr": 159,
+          "note": "datasheet calls this bit SM0/FE: it is the frame-error flag when PCON.SMOD0=1"
+        }
+      ],
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "SBUF",
+      "addr": 153,
+      "addr_hex": "0x99",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "xxxx,xxxx",
+      "reset_value": 0
+    },
+    {
+      "name": "S2CON",
+      "addr": 154,
+      "addr_hex": "0x9A",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0100,0000",
+      "reset_value": 64
+    },
+    {
+      "name": "S2BUF",
+      "addr": 155,
+      "addr_hex": "0x9B",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "xxxx,xxxx",
+      "reset_value": 0
+    },
+    {
+      "name": "S3CON",
+      "addr": 172,
+      "addr_hex": "0xAC",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "S3BUF",
+      "addr": 173,
+      "addr_hex": "0xAD",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "xxxx,xxxx",
+      "reset_value": 0
+    },
+    {
+      "name": "S4CON",
+      "addr": 132,
+      "addr_hex": "0x84",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "S4BUF",
+      "addr": 133,
+      "addr_hex": "0x85",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "xxxx,xxxx",
+      "reset_value": 0
+    },
+    {
+      "name": "SADDR",
+      "addr": 169,
+      "addr_hex": "0xA9",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "SADEN",
+      "addr": 185,
+      "addr_hex": "0xB9",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "ADC_CONTR",
+      "addr": 188,
+      "addr_hex": "0xBC",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "ADC_RES",
+      "addr": 189,
+      "addr_hex": "0xBD",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "ADC_RESL",
+      "addr": 190,
+      "addr_hex": "0xBE",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "SPSTAT",
+      "addr": 205,
+      "addr_hex": "0xCD",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "00xx,xxxx",
+      "reset_value": 0
+    },
+    {
+      "name": "SPCTL",
+      "addr": 206,
+      "addr_hex": "0xCE",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0100",
+      "reset_value": 4
+    },
+    {
+      "name": "SPDAT",
+      "addr": 207,
+      "addr_hex": "0xCF",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "IAP_DATA",
+      "addr": 194,
+      "addr_hex": "0xC2",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "1111,1111",
+      "reset_value": 255
+    },
+    {
+      "name": "IAP_ADDRH",
+      "addr": 195,
+      "addr_hex": "0xC3",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "IAP_ADDRL",
+      "addr": 196,
+      "addr_hex": "0xC4",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "IAP_CMD",
+      "addr": 197,
+      "addr_hex": "0xC5",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "xxxx,xx00",
+      "reset_value": 0
+    },
+    {
+      "name": "IAP_TRIG",
+      "addr": 198,
+      "addr_hex": "0xC6",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "xxxx,xxxx",
+      "reset_value": 0
+    },
+    {
+      "name": "IAP_CONTR",
+      "addr": 199,
+      "addr_hex": "0xC7",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,x000",
+      "reset_value": 0
+    },
+    {
+      "name": "CCON",
+      "addr": 216,
+      "addr_hex": "0xD8",
+      "bit_addressable": true,
+      "bit_addr_base": 216,
+      "bits": [
+        {
+          "name": "CCF0",
+          "bit": 0,
+          "addr": 216
+        },
+        {
+          "name": "CCF1",
+          "bit": 1,
+          "addr": 217
+        },
+        {
+          "name": "CCF2",
+          "bit": 2,
+          "addr": 218
+        },
+        {
+          "name": "CR",
+          "bit": 6,
+          "addr": 222,
+          "note": "PCA counter run control"
+        },
+        {
+          "name": "CF",
+          "bit": 7,
+          "addr": 223,
+          "note": "PCA counter overflow flag, software clear only"
+        }
+      ],
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "00xx,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "CMOD",
+      "addr": 217,
+      "addr_hex": "0xD9",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0xxx,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "CL",
+      "addr": 233,
+      "addr_hex": "0xE9",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "CH",
+      "addr": 249,
+      "addr_hex": "0xF9",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "CCAPM0",
+      "addr": 218,
+      "addr_hex": "0xDA",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "x000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "CCAPM1",
+      "addr": 219,
+      "addr_hex": "0xDB",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "x000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "CCAPM2",
+      "addr": 220,
+      "addr_hex": "0xDC",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "x000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "CCAP0L",
+      "addr": 234,
+      "addr_hex": "0xEA",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "CCAP1L",
+      "addr": 235,
+      "addr_hex": "0xEB",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "CCAP2L",
+      "addr": 236,
+      "addr_hex": "0xEC",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "PCA_PWM0",
+      "addr": 242,
+      "addr_hex": "0xF2",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "xxxx,xx00",
+      "reset_value": 0
+    },
+    {
+      "name": "PCA_PWM1",
+      "addr": 243,
+      "addr_hex": "0xF3",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "xxxx,xx00",
+      "reset_value": 0
+    },
+    {
+      "name": "PCA_PWM2",
+      "addr": 244,
+      "addr_hex": "0xF4",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "xxxx,xx00",
+      "reset_value": 0
+    },
+    {
+      "name": "CCAP0H",
+      "addr": 250,
+      "addr_hex": "0xFA",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "CCAP1H",
+      "addr": 251,
+      "addr_hex": "0xFB",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    },
+    {
+      "name": "CCAP2H",
+      "addr": 252,
+      "addr_hex": "0xFC",
+      "bit_addressable": false,
+      "available_on_stc15f2k60s2": true,
+      "reset_value_bits": "0000,0000",
+      "reset_value": 0
+    }
+  ],
+  "memory": {
+    "iram_bytes": 256,
+    "iram_breakdown": {
+      "low_128_direct_and_indirect": 128,
+      "high_128_indirect_only": 128,
+      "note": "high 128 bytes (0x80-0xFF via @Ri) share the address range with the SFRs, but are physically separate; SFR access is direct-only, upper RAM is indirect-only."
+    },
+    "bit_addressable_ram": {
+      "start": 32,
+      "end": 47,
+      "bytes": 16,
+      "note": "IRAM 0x20-0x2F, bit addresses 0x00-0x7F"
+    },
+    "xram_bytes": 1792,
+    "xram_address_range": {
+      "start": 0,
+      "end": 1791,
+      "start_hex": "0x0000",
+      "end_hex": "0x06FF"
+    },
+    "xram_note": "internal auxiliary RAM (AUX-RAM), reached with MOVX @DPTR/@Ri while AUXR.EXTRAM=0",
+    "external_xram_bytes": 65536,
+    "flash_bytes": 61440,
+    "flash_address_range": {
+      "start_hex": "0x0000",
+      "end_hex": "0xEFFF"
+    },
+    "flash_note": "60K user program area 0000H-EFFFH on a 64K (0x10000) code space; F000H-FFFFH holds the ISP/system area",
+    "eeprom_bytes": 1024,
+    "eeprom_address_range": {
+      "start_hex": "0x0000",
+      "end_hex": "0x03FF",
+      "sector_size": 512,
+      "sectors": 2,
+      "movc_start_hex": "0xF000",
+      "movc_end_hex": "0xF3FF"
+    },
+    "sfr_bytes": 128,
+    "ports": [
+      "P0",
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "port_addrs": {
+      "P0": 128,
+      "P1": 144,
+      "P2": 160,
+      "P3": 176,
+      "P4": 192,
+      "P5": 200
+    },
+    "port_bit_addressable": {
+      "P0": true,
+      "P1": true,
+      "P2": true,
+      "P3": true,
+      "P4": true,
+      "P5": true
+    },
+    "port_pin_counts": {
+      "P0": 8,
+      "P1": 8,
+      "P2": 8,
+      "P3": 8,
+      "P4": 8,
+      "P5": 6
+    },
+    "max_io_pins": 42
+  },
+  "bit_addressable_sfrs": [
+    {
+      "name": "ACC",
+      "addr": 224,
+      "addr_hex": "0xE0"
+    },
+    {
+      "name": "B",
+      "addr": 240,
+      "addr_hex": "0xF0"
+    },
+    {
+      "name": "PSW",
+      "addr": 208,
+      "addr_hex": "0xD0"
+    },
+    {
+      "name": "P0",
+      "addr": 128,
+      "addr_hex": "0x80"
+    },
+    {
+      "name": "P1",
+      "addr": 144,
+      "addr_hex": "0x90"
+    },
+    {
+      "name": "P2",
+      "addr": 160,
+      "addr_hex": "0xA0"
+    },
+    {
+      "name": "P3",
+      "addr": 176,
+      "addr_hex": "0xB0"
+    },
+    {
+      "name": "P4",
+      "addr": 192,
+      "addr_hex": "0xC0"
+    },
+    {
+      "name": "P5",
+      "addr": 200,
+      "addr_hex": "0xC8"
+    },
+    {
+      "name": "P6",
+      "addr": 232,
+      "addr_hex": "0xE8"
+    },
+    {
+      "name": "P7",
+      "addr": 248,
+      "addr_hex": "0xF8"
+    },
+    {
+      "name": "IE",
+      "addr": 168,
+      "addr_hex": "0xA8"
+    },
+    {
+      "name": "IP",
+      "addr": 184,
+      "addr_hex": "0xB8"
+    },
+    {
+      "name": "TCON",
+      "addr": 136,
+      "addr_hex": "0x88"
+    },
+    {
+      "name": "SCON",
+      "addr": 152,
+      "addr_hex": "0x98"
+    },
+    {
+      "name": "CCON",
+      "addr": 216,
+      "addr_hex": "0xD8"
+    }
+  ],
+  "notes": [
+    "sfr[] entries come verbatim from the STC15F2K60S2 Keil header (see sources); every addr was cross-checked against the SFR map in the official STC15F2K60S2 datasheet chapter 3.",
+    "bit_addressable flags follow the Intel/Keil rule: SFR byte address in 0x80..0xFF and divisible by 8.",
+    "bits[] contains ONLY sbit names that literally appear in the header; no bit names were invented.",
+    "P5 only has 6 pins (P5.0-P5.5). The header still declares P56/P57 as sbits; those two bits are reserved on STC15F2K60S2 (P5 reset value xx11,1111B) and are flagged unavailable.",
+    "The header files also declare P6 (0xE8) / P7 (0xF8) and their mode registers, plus T3/T4 registers (T4T3M 0xD1, T4H/T4L, T3H/T3L) and PWM/CMP SFRs. Those belong to other STC15 family members (STC15W4KxxS4 and 64-pin parts); they are NOT populated on STC15F2K60S2 in a 40/44-pin package. They are listed with available=false so the simulator can trap accesses.",
+    "IE (0xA8) bit5 is EADC and bit6 is ELVD on STC15F2K60S2 - there is no ET2 in IE. Timer 2's enable is IE2.4 (ET2), IE2 is at 0xAF and is NOT bit addressable.",
+    "AUXR is 0x8E and is NOT bit addressable; AUXR.EXTRAM (bit1) selects internal AUX-RAM vs external data memory for MOVX (@DPTR: addresses < 0x0700 hit the internal 1792-byte AUX-RAM when EXTRAM=0; >= 0x0700 always goes off chip). AUXR resets to 0000,0001B on this family (S1ST2=1).",
+    "AUXR1 (0xA2) and P_SW1 (0xA2) are the same physical register (two names).",
+    "T4T3M (0xD1) and T3T4M (0xD1) are the same physical register (two names).",
+    "INT_CLKO/AUXR2 (0x8F) is NOT bit addressable; EX2/EX3/EX4 live there, not in IE.",
+    "The 22 instructions that execute in a single clock (1T core) and INC DPTR / MUL AB (24x) are the only timing differences from a classic 8051; the 111-instruction opcode set is fully compatible.",
+    "Bit names for TCON/SCON/IE/IP/CCON in this table were byte-for-byte cross-checked against the official datasheet: TCON 0x88 TF1 TR1 TF0 TR0 IE1 IT1 IE0 IT0; SCON 0x98 SM0/FE SM1 SM2 REN TB8 RB8 TI RI; IE 0xA8 EA ELVD EADC ES ET1 EX1 ET0 EX0; IP 0xB8 PPCA PLVD PADC PS PT1 PX1 PT0 PX0; CCON 0xD8 CF CR - - - CCF2 CCF1 CCF0; PSW 0xD0 CY AC F0 RS1 RS0 OV - P.",
+    "IMPORTANT for the simulator: on STC15F2K60S2 the IE.5 bit is EADC and IE.6 is ELVD - NOT ET2/ES2. Classic-8052 code that sets IE.5 to enable Timer 2 will instead enable the ADC interrupt.",
+    "Reset values in reset_value / reset_value_bits come from the datasheet SFR map; 'x' bits are read as 0 in reset_value and are not defined at reset.",
+    "IE2 is NOT bit addressable and IE2's bit layout is the single biggest open question: the STC15 manual prints two contradictory IE2 tables (see documented_bit_fields.IE2). The layout used by STC's own SPI sample code is ES2=b0, ESPI=b1, ET2=b2, ES3=b3, ES4=b4, ET3=b5, ET4=b6. On STC15F2K60S2 only ES2/ESPI/ET2 are meaningful (no T3/T4/UART3/UART4 on a 40/44-pin part).",
+    "documented_bit_fields[] holds bit layouts that the datasheet documents in prose/prose tables (no sbit exists in the header for them) plus explicitly flagged conflicts; bits[] stays header-only as required.",
+    "AUXR reset value is 0000,0001B on this family (S1ST2 defaults to 1), i.e. UART1 uses Timer 1 as the baud-rate generator by default and T0/T1 run in 12T mode until T0x12/T1x12 are set."
+  ],
+  "sources": [
+    "https://www.stcmicro.com/datasheet/STC15F2K60S2-cn.pdf",
+    "https://www.stcmicro.com/stc/stc15f2k60s2.html",
+    "https://github.com/uluo1226/51_Lanqiao_2019/blob/master/2_3peripherals/stc15f2k60s2.h",
+    "https://github.com/uluo1226/51_Lanqiao_2019/blob/master/3_2011jue_door/stc15.h",
+    "https://github.com/mogoreanu/8x16/blob/master/stc15f2k60s2.h",
+    "https://www.mikrocontroller.net/attachment/428781/STC15-English.pdf"
+  ],
+  "documented_bit_fields": [
+    {
+      "sfr": "IE2",
+      "addr": 175,
+      "addr_hex": "0xAF",
+      "bit_addressable": false,
+      "confidence": "manual_conflict - the STC15 manual prints two DIFFERENT IE2 layouts",
+      "layout_a_from_STC_official_spi_example": {
+        "source": "datasheet ch.15 SPI sample code: '#define ESPI 0x02  //IE2.1' and ch.7/ch.16 IE2 tables 'B2 ET2, B1 ESPI, B0 ES2'",
+        "bits": {
+          "ET4": 6,
+          "ET3": 5,
+          "ES4": 4,
+          "ES3": 3,
+          "ET2": 2,
+          "ESPI": 1,
+          "ES2": 0
+        }
+      },
+      "layout_b_printed_as_STC15F2K60S2": {
+        "source": "datasheet ch.6 '6.5 中断寄存器' table printed under the heading '上表中列出了与STC15F2K60S2系列单片机中断相关的所有寄存器'",
+        "bits": {
+          "ET4": 6,
+          "ET3": 5,
+          "ES4": 4,
+          "ES3": 3,
+          "ET2": 4,
+          "ESPI": 2,
+          "ES2": 0
+        },
+        "problem": "layout_b is internally inconsistent (it skips bit 1) and contradicts the same manual's SPI example which defines ESPI as IE2.1 = 0x02"
+      },
+      "recommendation": "use layout_a (ES2=bit0, ESPI=bit1, ET2=bit2, ES3=bit3, ES4=bit4, ET3=bit5, ET4=bit6); verify on real silicon"
+    },
+    {
+      "sfr": "INT_CLKO",
+      "addr": 143,
+      "addr_hex": "0x8F",
+      "bit_addressable": false,
+      "confidence": "confirmed by datasheet ch.6",
+      "bits": {
+        "EX4": 6,
+        "EX3": 5,
+        "EX2": 4,
+        "MCKO_S2": 3,
+        "T2CLKO": 2,
+        "T1CLKO": 1,
+        "T0CLKO": 0
+      }
+    },
+    {
+      "sfr": "IP2",
+      "addr": 181,
+      "addr_hex": "0xB5",
+      "bit_addressable": false,
+      "confidence": "datasheet ch.6 prints 'xxx0,0000: B4 PX4, B3 PPWMFD, B2 PPWM, B1 PSPI, B0 PS2' and later 'IP2 B5H: B1 PSPI, B0 PS2' - layouts differ per family member",
+      "bits_as_printed_ch6": {
+        "PX4": 4,
+        "PPWMFD": 3,
+        "PPWM": 2,
+        "PSPI": 1,
+        "PS2": 0
+      },
+      "bits_as_printed_ch15_16": {
+        "PSPI": 1,
+        "PS2": 0
+      },
+      "recommendation": "for STC15F2K60S2 only PS2 (bit0) and PSPI (bit1) are meaningful; PX4/PPWM belong to other family members"
+    },
+    {
+      "sfr": "AUXR",
+      "addr": 142,
+      "addr_hex": "0x8E",
+      "bit_addressable": false,
+      "confidence": "confirmed by datasheet ch.3 and ch.6",
+      "bits": {
+        "T0x12": 7,
+        "T1x12": 6,
+        "UART_M0x6": 5,
+        "T2R": 4,
+        "T2_C/T": 3,
+        "T2x12": 2,
+        "EXTRAM": 1,
+        "S1ST2": 0
+      },
+      "reset_value_bits": "0000,0001"
+    },
+    {
+      "sfr": "AUXR1 / P_SW1",
+      "addr": 162,
+      "addr_hex": "0xA2",
+      "bit_addressable": false,
+      "confidence": "confirmed by datasheet ch.15 '6. 控制SPI功能切换的寄存器AUXR1(P_SW1)'",
+      "bits": {
+        "S1_S1": 7,
+        "S1_S0": 6,
+        "CCP_S1": 5,
+        "CCP_S0": 4,
+        "SPI_S1": 3,
+        "SPI_S0": 2,
+        "reserved": 1,
+        "DPS": 0
+      },
+      "reset_value_bits": "0000,0000"
+    },
+    {
+      "sfr": "PCON",
+      "addr": 135,
+      "addr_hex": "0x87",
+      "bit_addressable": false,
+      "confidence": "confirmed by datasheet ch.3",
+      "bits": {
+        "SMOD": 7,
+        "SMOD0": 6,
+        "LVDF": 5,
+        "POF": 4,
+        "GF1": 3,
+        "GF0": 2,
+        "PD": 1,
+        "IDL": 0
+      },
+      "reset_value_bits": "0011,0000"
+    },
+    {
+      "sfr": "CCON",
+      "addr": 216,
+      "addr_hex": "0xD8",
+      "bit_addressable": true,
+      "confidence": "confirmed by datasheet PCA chapter; note CCF3 exists on other family members",
+      "bits": {
+        "CF": 7,
+        "CR": 6,
+        "CCF2": 2,
+        "CCF1": 1,
+        "CCF0": 0
+      },
+      "reset_value_bits": "00xx,0000"
+    },
+    {
+      "sfr": "SPCTL",
+      "addr": 206,
+      "addr_hex": "0xCE",
+      "bit_addressable": false,
+      "confidence": "confirmed by datasheet SPI chapter",
+      "bits": {
+        "SSIG": 7,
+        "SPEN": 6,
+        "DORD": 5,
+        "MSTR": 4,
+        "CPOL": 3,
+        "CPHA": 2,
+        "SPR1": 1,
+        "SPR0": 0
+      },
+      "reset_value_bits": "0000,0100"
+    },
+    {
+      "sfr": "WDT_CONTR",
+      "addr": 193,
+      "addr_hex": "0xC1",
+      "bit_addressable": false,
+      "confidence": "confirmed by datasheet ch.3",
+      "bits": {
+        "WDT_FLAG": 7,
+        "EN_WDT": 5,
+        "CLR_WDT": 4,
+        "IDLE_WDT": 3,
+        "PS2": 2,
+        "PS1": 1,
+        "PS0": 0
+      },
+      "reset_value_bits": "0000,0000"
+    },
+    {
+      "sfr": "IAP_CONTR",
+      "addr": 199,
+      "addr_hex": "0xC7",
+      "bit_addressable": false,
+      "confidence": "confirmed by datasheet ch.3",
+      "bits": {
+        "IAPEN": 7,
+        "SWBS": 6,
+        "SWRST": 5,
+        "CMD_FAIL": 4,
+        "WT2": 2,
+        "WT1": 1,
+        "WT0": 0
+      },
+      "reset_value_bits": "0000,x000"
+    },
+    {
+      "sfr": "IAP_CMD",
+      "addr": 197,
+      "addr_hex": "0xC5",
+      "bit_addressable": false,
+      "confidence": "confirmed by datasheet ch.3",
+      "bits": {
+        "MS1": 1,
+        "MS0": 0
+      },
+      "reset_value_bits": "xxxx,xx00"
+    },
+    {
+      "sfr": "P_SW2",
+      "addr": 186,
+      "addr_hex": "0xBA",
+      "bit_addressable": false,
+      "confidence": "confirmed by datasheet ch.3 for STC15F2K60S2 (the PWM67_S/PWM2345_S/EAXSFR bits at the same address belong to STC15W4K)",
+      "bits": {
+        "S4_S": 2,
+        "S3_S": 1,
+        "S2_S": 0
+      },
+      "reset_value_bits": "xxxx,x000"
+    },
+    {
+      "sfr": "ADC_CONTR",
+      "addr": 188,
+      "addr_hex": "0xBC",
+      "bit_addressable": false,
+      "confidence": "confirmed by datasheet ADC chapter",
+      "bits": {
+        "ADC_POWER": 7,
+        "SPEED1": 6,
+        "SPEED0": 5,
+        "ADC_FLAG": 4,
+        "ADC_START": 3,
+        "CHS2": 2,
+        "CHS1": 1,
+        "CHS0": 0
+      },
+      "reset_value_bits": "0000,0000"
+    },
+    {
+      "sfr": "CLK_DIV",
+      "addr": 151,
+      "addr_hex": "0x97",
+      "bit_addressable": false,
+      "confidence": "datasheet ch.3 prints 'MCKO_S1 MCKO_S1 ADRJ Tx_Rx MCLKO_2 CLKS2 CLKS1 CLKS0' (B6 is printed twice - typo for MCKO_S0)",
+      "bits": {
+        "MCKO_S1": 7,
+        "MCKO_S0": 6,
+        "ADRJ": 5,
+        "Tx_Rx": 4,
+        "MCLKO_2": 3,
+        "CLKS2": 2,
+        "CLKS1": 1,
+        "CLKS0": 0
+      },
+      "reset_value_bits": "0000,0000"
+    }
+  ],
+  "raw_header_mirrors": {
+    "mogoreanu": "research/raw/mogoreanu-8x16-stc15f2k60s2.utf8.h",
+    "uluo_f2k60s2": "research/raw/uluo1226-lanqiao-stc15f2k60s2.utf8.h",
+    "uluo_stc15": "research/raw/uluo1226-lanqiao-stc15.utf8.h"
+  },
+  "parser_cross_check": {
+    "sfr_only_in_mogoreanu": [
+      "CMPCR1",
+      "CMPCR2",
+      "PWMCFG",
+      "PWMCR",
+      "PWMFDCR",
+      "PWMIF"
+    ],
+    "sfr_only_in_uluo_stc15": []
+  },
+  "non_bit_addressable_sfrs": [
+    "SP",
+    "DPL",
+    "DPH",
+    "P0M0",
+    "P0M1",
+    "P1M0",
+    "P1M1",
+    "P2M0",
+    "P2M1",
+    "P3M0",
+    "P3M1",
+    "P4M0",
+    "P4M1",
+    "P5M0",
+    "P5M1",
+    "P6M0",
+    "P6M1",
+    "P7M0",
+    "P7M1",
+    "PCON",
+    "AUXR",
+    "AUXR1",
+    "P_SW1",
+    "CLK_DIV",
+    "BUS_SPEED",
+    "P1ASF",
+    "P_SW2",
+    "IE2",
+    "IP2",
+    "INT_CLKO",
+    "TMOD",
+    "TL0",
+    "TL1",
+    "TH0",
+    "TH1",
+    "T4T3M",
+    "T3T4M",
+    "T4H",
+    "T4L",
+    "T3H",
+    "T3L",
+    "T2H",
+    "T2L",
+    "WKTCL",
+    "WKTCH",
+    "WDT_CONTR",
+    "SBUF",
+    "S2CON",
+    "S2BUF",
+    "S3CON",
+    "S3BUF",
+    "S4CON",
+    "S4BUF",
+    "SADDR",
+    "SADEN",
+    "ADC_CONTR",
+    "ADC_RES",
+    "ADC_RESL",
+    "SPSTAT",
+    "SPCTL",
+    "SPDAT",
+    "IAP_DATA",
+    "IAP_ADDRH",
+    "IAP_ADDRL",
+    "IAP_CMD",
+    "IAP_TRIG",
+    "IAP_CONTR",
+    "CMOD",
+    "CL",
+    "CH",
+    "CCAPM0",
+    "CCAPM1",
+    "CCAPM2",
+    "CCAP0L",
+    "CCAP1L",
+    "CCAP2L",
+    "PCA_PWM0",
+    "PCA_PWM1",
+    "PCA_PWM2",
+    "CCAP0H",
+    "CCAP1H",
+    "CCAP2H"
+  ]
+}

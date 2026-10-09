@@ -1,0 +1,13 @@
+# 统一按文本处理，避免 Windows/Linux 换行差异造成整文件 diff
+* text=auto
+
+# Windows 批处理必须用 CRLF，否则 cmd.exe 可能解析异常
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# 二进制文件不做换行转换
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff binary
+*.woff2 binary

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STC15F2K60S2 汇编可视化模拟器</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="chipbadge">STC15F2K60S2</span>
+    <h1>汇编语言可视化模拟器</h1>
+    <span class="sub">8051 内核 · 1T · 60KB Flash · 256B 内部 RAM + 1792B 片内 XRAM</span>
+  </div>
+  <div class="statusline">
+    <span id="asmStatus" class="status status-idle">尚未汇编</span>
+    <span id="runStatus" class="status status-idle">已停止</span>
+    <button id="btnFull" class="btn btn-ghost btn-full" title="进入网页全屏（Ctrl+Shift+F）">⛶ 全屏</button>
+  </div>
+</header>
+
+<main class="layout">
+
+  <!-- ======================= 左：编辑器 ======================= -->
+  <section class="panel panel-editor">
+    <div class="panel-head">
+      <h2>汇编源程序</h2>
+      <div class="panel-actions">
+        <button id="btnAsm" class="btn btn-primary" title="Ctrl+Enter">汇编并载入</button>
+        <button id="btnClear" class="btn btn-ghost">清空</button>
+      </div>
+    </div>
+    <div class="editor-wrap">
+      <div id="gutter" class="gutter" aria-hidden="true"></div>
+      <textarea id="source" spellcheck="false" wrap="off"></textarea>
+    </div>
+    <div class="panel-foot">
+      <div class="hint">支持 A51 风格伪指令：ORG / END / EQU / BIT / DATA / DB / DW / DS / CSEG AT；支持 <code>$</code>、<code>HIGH/LOW</code>、SFR 名与位名（<code>PSW.7</code>、<code>CY</code>、<code>P1.0</code>、<code>20H.3</code>）</div>
+    </div>
+    <div id="msgBox" class="msgbox"></div>
+  </section>
+
+  <!-- ======================= 中：程序与执行 ======================= -->
+  <section class="panel panel-code">
+    <div class="panel-head">
+      <h2>程序存储器（指令存放地址）</h2>
+      <span id="codeInfo" class="muted"></span>
+    </div>
+
+    <div class="controls">
+      <button id="btnStep" class="btn btn-primary" title="F8">单步执行</button>
+      <button id="btnRun" class="btn" title="F5">连续运行</button>
+      <button id="btnToCursor" class="btn" title="F10">运行到光标行</button>
+      <button id="btnToEntry" class="btn" title="把 PC 设到程序第一条指令（跳过 0000H 起的空片区域）">跳到入口</button>
+      <button id="btnReset" class="btn btn-ghost" title="F9">复位</button>
+      <label class="speed">速度
+        <select id="speed">
+          <option value="1">逐条（1 条/帧）</option>
+          <option value="5" selected>慢（5 条/帧）</option>
+          <option value="50">中（50 条/帧）</option>
+          <option value="500">快（500 条/帧）</option>
+          <option value="5000">极快（5000 条/帧）</option>
+        </select>
+      </label>
+    </div>
+
+    <div id="curInstr" class="curinstr">
+      <div class="curline">
+        <span class="curlabel">当前指令</span>
+        <span id="curAddr" class="mono big">----</span>
+        <span id="curBytes" class="mono bytes">—</span>
+        <span id="curText" class="mono big">尚未载入程序</span>
+      </div>
+      <div id="curEffect" class="cureffect muted">按 F8 单步执行</div>
+    </div>
+
+    <div class="listing-wrap">
+      <div class="listing-head" id="listingHead">
+        <span class="col-addr">地址</span><span class="col-bytes">机器码</span><span class="col-text">指令 / 数据</span><span class="col-src">源码</span>
+      </div>
+      <div id="listing" class="listing"></div>
+    </div>
+
+    <div class="codemap-wrap">
+      <div class="codemap-head">代码空间分布（用户程序区 60KB，0000H~EFFFH，每格 256 字节）<span id="codemapTip" class="muted"></span></div>
+      <div id="codemap" class="codemap"></div>
+      <div class="hint" style="margin-top:6px">程序存在片内 Flash（掉电不丢）。用户程序区 0000H~EFFFH；
+        F000H~F1FFH 用户 ISP 区、F200H~F3FFH 复位入口映射区、F400H~FFFFH 系统区不可访问（厂家 ISP 引导程序）。
+        复位后 PC=0000H，所以 0000H 处通常放一条跳转；0003H/000BH/0013H/001BH/0023H 等是中断向量入口。</div>
+    </div>
+  </section>
+
+  <!-- ======================= 右：寄存器 ======================= -->
+  <section class="panel panel-regs">
+    <div class="panel-head"><h2>寄存器 / 状态</h2><span id="regBankTag" class="tag">寄存器组 0</span></div>
+
+    <div class="regblock">
+      <div class="regrow regrow-key">
+        <span class="regname">PC</span><span id="rPC" class="mono regval big"></span>
+      </div>
+      <div class="regrow regrow-key">
+        <span class="regname">SP</span><span id="rSP" class="mono regval big"></span>
+        <span id="rSPnote" class="muted small"></span>
+      </div>
+      <div class="regrow regrow-key">
+        <span class="regname">DPTR</span><span id="rDPTR" class="mono regval big"></span>
+        <span id="rDPTRnote" class="muted small"></span>
+      </div>
+      <div class="regrow">
+        <span class="regname">DPH / DPL</span><span id="rDPHL" class="mono regval"></span>
+      </div>
+      <div class="regrow">
+        <span class="regname">ACC</span><span id="rACC" class="mono regval"></span>
+        <span id="rACCBin" class="mono muted small"></span>
+      </div>
+      <div class="regrow">
+        <span class="regname">B</span><span id="rB" class="mono regval"></span>
+      </div>
+      <div class="regrow">
+        <span class="regname">PSW</span><span id="rPSW" class="mono regval"></span>
+        <span id="rPSWBits" class="mono muted small"></span>
+      </div>
+    </div>
+
+    <div class="flags">
+      <div class="flag" data-f="CY"><b>CY</b><span id="fCY">0</span></div>
+      <div class="flag" data-f="AC"><b>AC</b><span id="fAC">0</span></div>
+      <div class="flag" data-f="F0"><b>F0</b><span id="fF0">0</span></div>
+      <div class="flag" data-f="RS1"><b>RS1</b><span id="fRS1">0</span></div>
+      <div class="flag" data-f="RS0"><b>RS0</b><span id="fRS0">0</span></div>
+      <div class="flag" data-f="OV"><b>OV</b><span id="fOV">0</span></div>
+      <div class="flag" data-f="P"><b>P</b><span id="fP">0</span></div>
+    </div>
+
+    <div class="regblock">
+      <div class="rnhead"><span>当前寄存器组 R0~R7</span><span id="rnBank" class="muted small"></span></div>
+      <div id="rnGrid" class="rngrid"></div>
+    </div>
+
+    <div class="regblock counters">
+      <div class="regrow"><span class="regname">已执行</span><span id="rSteps" class="mono regval"></span></div>
+      <div class="regrow"><span class="regname">机器周期</span><span id="rCycles" class="mono regval"></span></div>
+    </div>
+  </section>
+</main>
+
+<!-- ======================= 内存可视化 ======================= -->
+<section class="mempane">
+  <div class="panel-head">
+    <h2>存储器数据可视化</h2>
+    <div class="tabs">
+      <button class="tab active" data-space="iram">内部 RAM（256 字节）</button>
+      <button class="tab" data-space="xram">片内 XRAM（1792 字节）</button>
+      <button class="tab" data-space="sfr">SFR 区（128 个寄存器）</button>
+      <button class="tab" data-space="flash">程序 Flash（61440 字节）</button>
+    </div>
+    <div class="radix" title="格子数值的显示进制">
+      <span>数值显示</span>
+      <div class="seg">
+        <button class="radix-btn active" data-radix="hex">十六进制</button>
+        <button class="radix-btn" data-radix="dec">十进制</button>
+      </div>
+    </div>
+    <div class="legend">
+      <span class="lg lg-wrote"></span>本步写入
+      <span class="lg lg-chg"></span>相对装入时有变化
+      <span class="lg lg-sp"></span>SP 指向
+      <span class="lg lg-reg"></span>当前寄存器组
+      <span class="lg lg-ptr"></span>DPTR 指向
+      <span class="muted">鼠标悬停任一格查看地址与含义</span>
+    </div>
+    <span id="memSummary" class="muted"></span>
+  </div>
+  <div class="memviews">
+    <div id="grid-iram" class="gridview active"></div>
+    <div id="grid-xram" class="gridview"></div>
+    <div id="grid-sfr" class="gridview"></div>
+    <div id="grid-flash" class="gridview">
+      <div class="flashbar">
+        <button id="fFirst" class="btn" title="第一页">⏮</button>
+        <button id="fPrev" class="btn" title="上一页">◀ 上一页</button>
+        <span id="fPage" class="mono fpage">0000H ~ 00FFH</span>
+        <button id="fNext" class="btn" title="下一页">下一页 ▶</button>
+        <button id="fLast" class="btn" title="最后一页">⏭</button>
+        <button id="fToPc" class="btn">跳到 PC 所在页</button>
+        <label class="flashjump">跳转到地址 <input id="fAddr" class="mono" type="text" size="7" placeholder="0030H" spellcheck="false"></label>
+        <label class="flashfollow"><input type="checkbox" id="fFollow" checked> 跟随 PC</label>
+        <button id="fErase" class="btn btn-erase" title="模拟芯片全片擦除：把用户程序区 0000H~EFFFH 全部写为 FFH（不影响源码，可撤销）">⨯ 全片擦除</button>
+        <button id="fUndo" class="btn hidden" title="撤销刚才的擦除">↺ 撤销擦除</button>
+        <span id="fInfo" class="muted small"></span>
+      </div>
+      <div id="fGrid"></div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <span>STC15F2K60S2 指令级模拟器 · 直接地址 80H~FFH 指向 SFR，间接地址 80H~FFH 指向高 128B RAM（8051 经典重叠特性）</span>
+  <span id="footTip" class="muted"></span>
+</footer>
+
+<div id="tip" class="tip hidden"></div>
+
+<script src="js/opcodes.js"></script>
+<script src="js/sfr-data.js"></script>
+<script src="js/chips.js"></script>
+<script src="js/assembler.js"></script>
+<script src="js/cpu.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

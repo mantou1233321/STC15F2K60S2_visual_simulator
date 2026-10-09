@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>载入行为诊断</title></head>
+<body>
+<iframe id="f" src="../index.html" style="width:1400px;height:900px"></iframe>
+<pre id="out">RUNNING</pre>
+<script>
+(function () {
+  var PROGS = {
+    'A 有复位跳转（我给的完整版）': [
+      '        ORG 0000H',
+      '        LJMP START',
+      '        ORG 0030H',
+      'START:  MOV SP,#60H',
+      '        MOV R0,#50H',
+      'CZX:',
+      '        MOV A,20H',
+      '        LCALL PTDS',
+      '        SJMP $',
+      'PTDS:   MOV @R0,A',
+      '        INC R0',
+      '        RET',
+      '        END'
+    ].join('\n'),
+    'B 无复位跳转（你的原始版 + PTDS）': [
+      '        ORG 0030H',
+      '        MOV SP, #60H',
+      '        MOV R0, #50H',
+      'CZX:',
+      '        MOV A, 20H',
+      '        LCALL PTDS',
+      '        SJMP $',
+      'PTDS:   MOV @R0,A',
+      '        INC R0',
+      '        RET',
+      '        END'
+    ].join('\n'),
+    'C 只有标号': 'ORG 0\nCZX:\nEND',
+    'D 从 0000H 直接开始': 'ORG 0000H\nMOV A,#1\nSJMP $\nEND',
+    'E 空编辑区': '',
+    'F 只有注释': '; 这里什么都没有\n; ORG 0000H\n',
+    'G 擦除后再载入会失败的程序': null,
+    'H 擦除后再载入能成功的程序': null
+  };
+
+  var errors = [];
+  window.addEventListener('error', function (e) { errors.push('window.onerror: ' + e.message); });
+
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      var f = document.getElementById('f');
+      var doc = f.contentDocument, win = f.contentWindow;
+      var lines = [];
+      if (!doc) { done(['无法访问 iframe']); return; }
+      var fwin = win;
+      fwin.addEventListener('error', function (e) { errors.push('iframe error: ' + e.message + ' @' + e.filename + ':' + e.lineno); });
+      fwin.addEventListener('unhandledrejection', function (e) { errors.push('iframe rejection: ' + e.reason); });
+
+      function snap() {
+        return '清单行数: ' + doc.querySelectorAll('.listing-row').length +
+          '（其中标号行 ' + doc.querySelectorAll('.listing-row.label').length +
+          '，PC 提示行 ' + doc.querySelectorAll('.listing-row.pcorphan').length +
+          '，空态提示 ' + doc.querySelectorAll('.listing-empty').length + '）' +
+          '　错误 ' + doc.querySelectorAll('.msgbox .msg-err').length +
+          ' 条，提示 ' + doc.querySelectorAll('.msgbox .msg-info').length + ' 条';
+      }
+
+      Object.keys(PROGS).forEach(function (name) {
+        errors.length = 0;
+        try {
+          if (name.charAt(0) === 'G') {
+            doc.getElementById('source').value = 'ORG 0000H\nMOV A,#1\nSJMP $\nEND';
+            doc.getElementById('btnAsm').click();
+            doc.getElementById('fErase').click(); doc.getElementById('fErase').click();  // 全片擦除
+            doc.getElementById('source').value = 'ORG 0\nLCALL PTDS\nEND';               // PTDS 未定义 → 汇编失败
+            doc.getElementById('btnAsm').click();
+          } else if (name.charAt(0) === 'H') {
+            doc.getElementById('fErase').click(); doc.getElementById('fErase').click();
+            doc.getElementById('source').value = 'ORG 0000H\nMOV A,#1\nSJMP $\nEND';
+            doc.getElementById('btnAsm').click();
+          } else {
+            doc.getElementById('source').value = PROGS[name];
+            doc.getElementById('btnAsm').click();
+          }
+        } catch (e) {
+          lines.push('【' + name + '】 → 抛异常: ' + e.message);
+          return;
+        }
+        lines.push([
+          '【' + name + '】',
+          '  状态条: ' + doc.getElementById('asmStatus').textContent,
+          '  ' + snap(),
+          '  程序存储器顶部内容: ' + (doc.querySelector('#listing > *') ? doc.querySelector('#listing > *').textContent.trim().slice(0, 70) : '(空)'),
+          '  codeInfo: ' + doc.getElementById('codeInfo').textContent,
+          '  当前指令: ' + doc.getElementById('curText').textContent.trim(),
+          errors.length ? '  ⚠ JS 异常: ' + errors.join(' | ') : ''
+        ].filter(Boolean).join('\n'));
+      });
+      done(lines);
+    }, 700);
+  });
+
+  function done(lines) {
+    document.getElementById('out').textContent = 'DIAG-RESULT\n' + lines.join('\n');
+  }
+})();
+</script>
+</body>
+</html>

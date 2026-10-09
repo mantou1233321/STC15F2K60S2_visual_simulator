@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>UI 自测</title></head>
+<body>
+<iframe id="f" src="../index.html" style="width:1400px;height:900px"></iframe>
+<pre id="result">RUNNING</pre>
+<script>
+/* 真实浏览器里的集成自测：通过 DOM 事件驱动界面，检查渲染与交互是否正常。
+   运行： msedge --headless=new --allow-file-access-from-files --dump-dom file:///.../test/ui-selftest.html */
+(function () {
+  var log = [], fails = [];
+  function ok(cond, msg) { log.push((cond ? 'PASS ' : 'FAIL ') + msg); if (!cond) fails.push(msg); }
+  function num(s) { return parseFloat(String(s).replace(/[^0-9A-Fa-fx]/g, '')) || 0; }
+
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      var doc = document.getElementById('f').contentDocument;
+      var win = document.getElementById('f').contentWindow;
+      if (!doc) { finish('无法访问 iframe（file:// 同源策略）'); return; }
+      try {
+        ok(!!doc.getElementById('listing'), '页面结构加载');
+        ok(doc.querySelectorAll('.listing-row').length > 10, '默认程序已汇编出指令清单（' + doc.querySelectorAll('.listing-row').length + ' 行）');
+        ok(doc.querySelectorAll('#grid-iram .cell').length === 256, '内部 RAM 渲染 256 个格子');
+        ok(doc.querySelectorAll('#grid-xram .cell').length === 1792, 'XRAM 渲染 1792 个格子');
+        ok(doc.querySelectorAll('#grid-sfr .cell').length === 128, 'SFR 渲染 128 个格子');
+        ok(doc.querySelectorAll('#codemap div').length === 240, '代码空间分布图 240 块');
+        ok(/成功/.test(doc.getElementById('asmStatus').textContent), '状态条显示汇编成功：' + doc.getElementById('asmStatus').textContent);
+        ok(doc.querySelectorAll('.msgbox .msg-err').length === 0, '默认程序无汇编错误');
+
+        // 显示进制会被 localStorage 记住，自测必须先回到确定的十六进制状态
+        doc.querySelector('.radix-btn[data-radix="hex"]').click();
+        ok(!doc.querySelector('#grid-iram').classList.contains('dec'), '自测前强制回到十六进制显示');
+
+        var pc0 = doc.getElementById('rPC').textContent;
+        ok(/0000H/.test(pc0), '复位后 PC=0000H（实际 ' + pc0.trim() + '）');
+
+        // 第 1 步：LJMP START（0000H → 0030H），SP 不变
+        doc.getElementById('btnStep').click();
+        ok(/0030H/.test(doc.getElementById('rPC').textContent), '第 1 步执行 LJMP 后 PC=0030H');
+        ok(/07H/.test(doc.getElementById('rSP').textContent), '第 1 步未改动 SP（仍为 07H）');
+
+        // 第 2 步：MOV SP,#60H
+        doc.getElementById('btnStep').click();
+        var sp = doc.getElementById('rSP').textContent;
+        ok(/60H/.test(sp), '第 2 步后 SP=60H（实际 ' + sp.trim() + '）');
+        var cellSp = doc.querySelector('#grid-iram .cell.sp');
+        ok(!!cellSp && parseInt(cellSp.dataset.a, 10) === 0x60, 'RAM 网格标出 SP 指向的格子（0x60）');
+        ok(doc.querySelectorAll('#grid-sfr .cell.wrote').length > 0, '本步写入的 SFR 格子被高亮');
+        var chg = doc.querySelectorAll('#grid-sfr .cell.chg');
+        ok(chg.length > 0, '相对初值变化的格子被打标记（SFR ' + chg.length + ' 格）');
+
+        // 继续单步到装载循环结束：共 29 步（LJMP + 4 条初始化 + 6×4 条循环）
+        for (var i = 0; i < 27; i++) doc.getElementById('btnStep').click();
+        var v40 = doc.querySelector('#grid-iram .cell[data-a="64"]').textContent;
+        var v45 = doc.querySelector('#grid-iram .cell[data-a="69"]').textContent;
+        var v44 = doc.querySelector('#grid-iram .cell[data-a="68"]').textContent;
+        ok(v40 === '00' && v44 === '04' && v45 === '05',
+           'RAM 40H/44H/45H = 00/04/05（实际 ' + v40 + '/' + v44 + '/' + v45 + '）');
+        ok(doc.querySelectorAll('#grid-iram .cell.chg').length >= 6, '内部 RAM 变化格子被标记');
+        var reg0 = doc.querySelector('#rnGrid .rncell b').textContent;
+        ok(reg0 === '46', 'R0 显示为 46H（实际 ' + reg0 + '）');
+
+        // ---- 十六进制 / 十进制显示切换 ----
+        var cell45 = doc.querySelector('#grid-iram .cell[data-a="69"]');   // 0x45 里存的是 5
+        ok(cell45.textContent === '05', '十六进制模式显示 05（实际 ' + cell45.textContent + '）');
+        doc.querySelector('.radix-btn[data-radix="dec"]').click();
+        ok(cell45.textContent === '005', '切到十进制后显示 005（实际 ' + cell45.textContent + '）');
+        ok(doc.querySelector('#grid-iram').classList.contains('dec'), '视图容器带上 dec 类（用于字号微调）');
+        ok(/^\d{3}$/.test(doc.querySelector('#grid-sfr .cell[data-a="208"] b').textContent), 'SFR 视图同步切换为十进制');
+        cell45.dispatchEvent(new win.MouseEvent('mousemove', { bubbles: true, clientX: 300, clientY: 300 }));
+        ok(/▸ 十进制/.test(doc.getElementById('tip').textContent), '悬停提示标出当前进制');
+        ok(/5/.test(doc.getElementById('tip').textContent), '悬停提示仍同时给出两种进制');
+        doc.querySelector('.radix-btn[data-radix="hex"]').click();
+        ok(cell45.textContent === '05', '切回十六进制后恢复 05');
+        ok(!doc.querySelector('#grid-iram').classList.contains('dec'), 'dec 类被移除');
+
+        // ---- 网页全屏按钮 ----
+        var fb = doc.getElementById('btnFull');
+        ok(!!fb && /全屏/.test(fb.textContent), '顶部有全屏按钮（' + (fb ? fb.textContent : '') + '）');
+        ok(/Ctrl\+Shift\+F/.test(fb.title), '按钮提示里给出快捷键');
+        ok(!doc.body.classList.contains('is-fullscreen'), '初始不是全屏状态');
+        // 用 stub 的 fullscreenElement 驱动状态机（无头环境无法真正进入全屏）
+        Object.defineProperty(doc, 'fullscreenElement', { configurable: true, get: function () { return doc.documentElement; } });
+        doc.dispatchEvent(new win.Event('fullscreenchange'));
+        ok(/退出全屏/.test(fb.textContent), '进入全屏后按钮变成“退出全屏”');
+        ok(doc.body.classList.contains('is-fullscreen'), 'body 打上 is-fullscreen 标记');
+        Object.defineProperty(doc, 'fullscreenElement', { configurable: true, get: function () { return null; } });
+        doc.dispatchEvent(new win.Event('fullscreenchange'));
+        ok(/⛶ 全屏/.test(fb.textContent), '退出全屏后按钮恢复“全屏”');
+        // 真实点击不应抛异常（无头下会被浏览器拒绝并给出提示）
+        try { fb.click(); ok(true, '点击全屏按钮不抛异常'); }
+        catch (e2) { ok(false, '点击全屏按钮抛异常：' + e2.message); }
+        ok(typeof doc.documentElement.requestFullscreen === 'function', '浏览器提供 Fullscreen API（无则代码会退回 F11 提示）');
+        // 快捷键路径
+        try {
+          doc.dispatchEvent(new win.KeyboardEvent('keydown', { key: 'F', ctrlKey: true, shiftKey: true, bubbles: true }));
+          ok(true, 'Ctrl+Shift+F 快捷键不抛异常');
+        } catch (e3) { ok(false, '全屏快捷键抛异常：' + e3.message); }
+        if (win.STC && win.STC.ui && win.STC.ui.toggleFullscreen) {
+          try { win.STC.ui.toggleFullscreen(); ok(true, '对外暴露的 toggleFullscreen 可用'); }
+          catch (e4) { ok(false, 'toggleFullscreen 抛异常：' + e4.message); }
+        } else ok(false, '未暴露 STC.ui 测试钩子');
+
+        // 运行到光标行（选中清单中间某行）
+        var rows = doc.querySelectorAll('.listing-row');
+        rows[6].click();
+        ok(doc.querySelectorAll('.listing-row.iscursor').length === 1, '点击清单行可设置光标行');
+
+        // 切换到 XRAM / SFR 标签
+        doc.querySelector('.tab[data-space="sfr"]').click();
+        ok(doc.getElementById('grid-sfr').classList.contains('active'), 'SFR 标签切换生效');
+        ok(/#grid-sfr \.cell/.test('' + '') || doc.querySelectorAll('#grid-sfr .cell.sfrname').length === 128, 'SFR 格子显示寄存器名');
+
+        // 悬停提示：直接调用内部渲染路径（通过 mouseover 事件）
+        var target = doc.querySelector('#grid-iram .cell[data-a="47"]');
+        var ev = new win.MouseEvent('mousemove', { bubbles: true, clientX: 300, clientY: 300 });
+        target.dispatchEvent(ev);
+        var tip = doc.getElementById('tip');
+        ok(!tip.classList.contains('hidden') && /内部 RAM/.test(tip.textContent), '悬停显示地址与区域提示');
+        ok(/位地址/.test(tip.textContent), '位寻址区格子提示包含位地址信息');
+
+        // 复位
+        doc.getElementById('btnReset').click();
+        ok(/07H/.test(doc.getElementById('rSP').textContent), '复位后 SP=07H');
+        ok(doc.querySelectorAll('#grid-iram .cell.chg').length === 0, '复位后变化标记清零');
+
+        // ---- 程序 Flash 可视化（分页 256 字节）----
+        ok(!!doc.querySelector('.tab[data-space="flash"]'), '存在「程序 Flash」标签页');
+        doc.querySelector('.tab[data-space="flash"]').click();
+        ok(doc.getElementById('grid-flash').classList.contains('active'), 'Flash 视图可切换显示');
+        ok(doc.querySelectorAll('#fGrid .cell').length === 256, 'Flash 每页渲染 256 个格子');
+        ok(/0000H/.test(doc.querySelector('#fGrid .rowlab').textContent), '首页行标从 0000H 开始');
+        var c0 = doc.querySelector('#fGrid .cell[data-a="0"]');
+        ok(c0.textContent === '02', '0000H 处是 LJMP 操作码 02H（实际 ' + c0.textContent + '）');
+        ok(!c0.classList.contains('erased'), '0000H 标记为已编程');
+        var cErased = doc.querySelector('#fGrid .cell[data-a="250"]');
+        ok(cErased.classList.contains('erased') && cErased.textContent === 'FF', '未编程字节是 FFH 且标记为擦除态');
+        doc.getElementById('fNext').click();
+        ok(/0100H/.test(doc.querySelector('#fGrid .rowlab').textContent), '“下一页”翻到 0100H');
+        doc.getElementById('fFirst').click();
+        ok(/0000H/.test(doc.querySelector('#fGrid .rowlab').textContent), '“首页”回到 0000H');
+        // 跳到 PC 所在页（先用 LJMP 0200H 把 PC 挪到 0200H）
+        doc.getElementById('source').value = 'ORG 0\nLJMP 0200H\nORG 0200H\nMOV A,#1\nSJMP $\nEND';
+        doc.getElementById('btnAsm').click();
+        doc.getElementById('btnStep').click();
+        ok(/0200H/.test(doc.getElementById('rPC').textContent), 'PC 已跳到 0200H');
+        doc.getElementById('fToPc').click();
+        ok(/0200H/.test(doc.querySelector('#fGrid .rowlab').textContent), '“跳到 PC 所在页”翻到 0200H');
+        var pcCell = doc.querySelector('#fGrid .cell.pchead');
+        ok(!!pcCell && parseInt(pcCell.dataset.a, 10) === 0x200, 'PC 首字节格子被高亮（data-a=' + (pcCell ? pcCell.dataset.a : '-') + '）');
+        // 悬停提示给出所属源码行
+        var fcell = doc.querySelector('#fGrid .cell[data-a="512"]');
+        fcell.dispatchEvent(new win.MouseEvent('mousemove', { bubbles: true, clientX: 300, clientY: 300 }));
+        var ftip = doc.getElementById('tip').textContent;
+        ok(/程序 Flash/.test(ftip) && /0200H/.test(ftip), 'Flash 悬停提示显示地址');
+        ok(/第 4 行/.test(ftip) || /所属源码/.test(ftip), 'Flash 悬停提示给出所属源码行（实际：' + ftip.slice(0, 60) + '…）');
+        // 多走一步执行 MOV A,#1 → A=01H（供后面验证空片上的 MOV R7,A）
+        doc.getElementById('btnStep').click();
+        ok(/01/.test(doc.getElementById('rACC').textContent), 'A 已置为 01H');
+        // 十进制切换在 Flash 视图同样生效
+        doc.querySelector('.radix-btn[data-radix="dec"]').click();
+        ok(doc.querySelector('#fGrid .cell[data-a="512"]').textContent === '116', 'Flash 视图十进制显示（74H → 116）');
+        doc.querySelector('.radix-btn[data-radix="hex"]').click();
+        ok(doc.querySelector('#fGrid .cell[data-a="512"]').textContent === '74', '切回十六进制显示 74H（MOV A,#1 的操作码）');
+        // 点代码空间分布图跳页
+        doc.querySelector('#codemap div[data-block="3"]').click();
+        ok(/0300H/.test(doc.querySelector('#fGrid .rowlab').textContent), '点代码空间图的块可跳到对应 Flash 页');
+
+        // ---- 深色滚动条 / 深色原生控件 ----
+        ok(win.getComputedStyle(doc.documentElement).colorScheme === 'dark', '根元素声明 color-scheme: dark（原生滚动条/下拉框走深色）');
+        var sbRules = 0;
+        try {
+          for (var si = 0; si < doc.styleSheets.length; si++) {
+            var rules = doc.styleSheets[si].cssRules || [];
+            for (var ri = 0; ri < rules.length; ri++) {
+              var sel = rules[ri].selectorText || '';
+              if (sel.indexOf('::-webkit-scrollbar') >= 0) sbRules++;
+            }
+          }
+        } catch (e5) { /* file:// 下无法读取 cssRules，忽略 */ }
+        ok(sbRules >= 4, '样式表里有 ' + sbRules + ' 条 ::-webkit-scrollbar 规则（深色滚动条）');
+        var srcStyle = win.getComputedStyle(doc.getElementById('source'));
+        ok(srcStyle.getPropertyValue('--sb-track').trim() === '#0f0f0f', '编辑器轨道色跟随自身底色（' + srcStyle.getPropertyValue('--sb-track').trim() + '）');
+
+        // ---- 全片擦除（一键把 Flash 写回 FFH）+ 撤销 ----
+        ok(!!doc.getElementById('fErase'), 'Flash 工具栏有「全片擦除」按钮');
+        doc.getElementById('fToPc').click();   // 上一步刚跳到第 3 页，先回到 PC 所在页（0200H）
+        var rowsBefore = doc.querySelectorAll('.listing-row').length;
+        ok(rowsBefore > 0, '擦除前清单有条目（' + rowsBefore + '）');
+        var fe = doc.getElementById('fErase');
+        fe.click();
+        ok(/确认/.test(fe.textContent), '第一次点击进入待确认状态（' + fe.textContent + '）');
+        ok(doc.querySelector('#fGrid .cell[data-a="512"]').textContent === '74', '此时尚未擦除');
+        fe.click();
+        ok(doc.querySelector('#fGrid .cell[data-a="512"]').textContent === 'FF', '第二次点击后该字节变为 FFH');
+        ok(doc.querySelector('#fGrid .cell[data-a="512"]').classList.contains('erased'), '擦除后标记为擦除态');
+        ok(doc.querySelectorAll('#fGrid .cell:not(.erased)').length === 0, '整页 256 格全部为擦除态');
+        ok(doc.querySelectorAll('.listing-row:not(.pcorphan)').length === 0, '程序清单被清空（芯片已空，只剩 PC 提示行）');
+        ok(win.STC.ui.state.cpu.rom[0] === 0xFF && win.STC.ui.state.cpu.rom[0xEFFF] === 0xFF, '用户程序区首尾字节都是 FFH');
+        ok(win.STC.ui.state.cpu.rom[0xF000] === 0xFF && win.STC.ui.state.flashTotal === 0, '整片已编程字节数归零');
+        ok(/擦除/.test(doc.getElementById('asmStatus').textContent), '状态条提示已擦除');
+        ok(!doc.getElementById('fUndo').classList.contains('hidden'), '出现「撤销擦除」按钮');
+        // 擦除后单步应执行 FFH（MOV R7,A）——与真机空片行为一致；此前 A 已被 MOV A,#1 置为 01H
+        doc.getElementById('btnStep').click();
+        ok(/MOV R7,A/.test(doc.getElementById('curText').textContent), '空片上单步执行 FFH → MOV R7,A（实际 ' + doc.getElementById('curText').textContent + '）');
+        ok(doc.querySelectorAll('#rnGrid .rncell b')[7].textContent === '01', 'MOV R7,A 把 A=01H 存入 R7');
+        doc.getElementById('fUndo').click();
+        ok(doc.querySelector('#fGrid .cell[data-a="512"]').textContent === '74', '撤销后字节恢复为 74H');
+        ok(doc.querySelectorAll('.listing-row').length === rowsBefore, '撤销后清单条目数恢复（' + doc.querySelectorAll('.listing-row').length + '）');
+        ok(doc.getElementById('fUndo').classList.contains('hidden'), '撤销后按钮隐藏');
+
+        // ---- 复位向量（真机行为 PC=0000H）+ 标号独占一行 + 提示 ----
+        doc.getElementById('source').value = 'ORG 0030H\n        MOV SP,#60H\nCZX:\n        MOV A,20H\n        SJMP $\nEND';
+        doc.getElementById('btnAsm').click();
+        ok(/0000H/.test(doc.getElementById('rPC').textContent), '复位后 PC = 0000H（真机行为，不是第一条指令 0030H）');
+        ok(doc.querySelectorAll('.msgbox .msg-info').length >= 1, '自动给出复位向量提示');
+        ok(/复位后 PC/.test(doc.getElementById('msgBox').textContent), '提示说明 0000H 处没有指令');
+        ok(doc.querySelectorAll('.listing-row.label').length === 1, '标号独占一行时清单里有标号行');
+        ok(/CZX/.test(doc.querySelector('.listing-row.label').textContent), '标号行显示 CZX:');
+        ok(doc.querySelector('.listing-row.label').dataset.len === '0', '标号行长度为 0（不会抢 PC 高亮）');
+        doc.getElementById('btnToCursor').click();   // 光标默认停在入口
+        ok(/0030H/.test(doc.getElementById('rPC').textContent), '「运行到光标行」直接跳到程序入口 0030H');
+        ok(/MOV SP,#60H/.test(doc.getElementById('curText').textContent), '入口处正是程序第一条指令');
+        // 0000H 有跳转时不提示
+        doc.getElementById('source').value = 'ORG 0000H\nLJMP START\nORG 0030H\nSTART: MOV A,#1\nSJMP $\nEND';
+        doc.getElementById('btnAsm').click();
+        ok(doc.querySelectorAll('.msgbox .msg-info').length === 0, '0000H 有跳转时不产生该提示');
+        ok(/0000H/.test(doc.getElementById('rPC').textContent), '复位仍在 0000H');
+
+        // ---- “汇编成功但没有任何代码”必须明确告警，不能静默变空 ----
+        doc.getElementById('source').value = '';
+        doc.getElementById('btnAsm').click();
+        ok(/没有可载入的代码/.test(doc.getElementById('asmStatus').textContent), '空编辑区不再报“汇编成功”：' + doc.getElementById('asmStatus').textContent);
+        ok(doc.querySelectorAll('.msgbox .msg-warn').length > 0, '空编辑区给出警告');
+        ok(/编辑区是空的/.test(doc.getElementById('msgBox').textContent), '提示说明是编辑区为空');
+        ok(doc.querySelectorAll('.listing-empty').length === 1, '程序存储器显示空态说明而不是一片空白');
+        ok(!/已全片擦除/.test(doc.querySelector('.listing-empty').textContent), '空态文案不再误报“已擦除”');
+        doc.getElementById('source').value = '; 只有注释，没有任何指令\n; ORG 0000H\n';
+        doc.getElementById('btnAsm').click();
+        ok(/没有产生任何代码/.test(doc.getElementById('msgBox').textContent), '只有注释时提示“没有产生任何代码”');
+        ok(doc.querySelectorAll('.listing-empty').length === 1, '仍显示空态说明');
+        // 汇编失败时不能破坏已载入的程序
+        doc.getElementById('source').value = 'ORG 0000H\nMOV A,#1\nSJMP $\nEND';
+        doc.getElementById('btnAsm').click();
+        var rowsGood = doc.querySelectorAll('.listing-row').length;
+        ok(rowsGood >= 2 && /汇编成功/.test(doc.getElementById('asmStatus').textContent), '先载入一个正常程序（' + rowsGood + ' 行）');
+        doc.getElementById('source').value = 'ORG 0\nLCALL PTDS\nEND';
+        doc.getElementById('btnAsm').click();
+        ok(/汇编失败/.test(doc.getElementById('asmStatus').textContent), 'PTDS 未定义时汇编失败');
+        ok(doc.querySelectorAll('.listing-row').length === rowsGood, '汇编失败后清单仍是上次成功的程序（' + doc.querySelectorAll('.listing-row').length + ' 行）');
+        ok(/仍是上一次成功载入的代码/.test(doc.getElementById('msgBox').textContent), '明确告知程序存储器里还是旧代码');
+        ok(!/已全片擦除/.test(doc.getElementById('codeInfo').textContent), 'codeInfo 仍显示真实程序信息');
+
+        // ---- PC 落在程序外时的可见性（曾出现“点载入没反应”的错觉）----
+        doc.getElementById('source').value = 'ORG 0030H\n        MOV SP,#60H\nCZX:\n        MOV A,20H\n        SJMP $\nEND';
+        doc.getElementById('btnAsm').click();
+        ok(doc.querySelectorAll('.listing-row.pcorphan').length === 1, 'PC 在程序外空片区时清单顶部给出提示行');
+        ok(/PC 在这里/.test(doc.querySelector('.listing-row.pcorphan').textContent), '提示行说明 PC 所在位置');
+        ok(/FFH/.test(doc.querySelector('.listing-row.pcorphan').textContent), '提示行指出该处是空片 FFH');
+        ok(/空片区/.test(doc.getElementById('curEffect').textContent), '当前指令下方也提示空片区并给出解决办法');
+        ok(doc.querySelectorAll('.listing-row.ispc').length === 0, '此时清单里确实没有 PC 高亮行（正是“没反应”的根因）');
+        doc.getElementById('btnToEntry').click();
+        ok(/0030H/.test(doc.getElementById('rPC').textContent), '「跳到入口」把 PC 设为程序入口 0030H');
+        ok(doc.querySelectorAll('.listing-row.pcorphan').length === 0, '进入程序后提示行自动消失');
+        ok(doc.querySelectorAll('.listing-row.ispc').length === 1, '进入程序后清单恢复 PC 高亮');
+        ok(doc.querySelectorAll('.msgbox .msg-ok').length > 0, '跳到入口后有成功提示');
+
+        // ---- 编辑器行号栏 ----
+        var gut = doc.getElementById('gutter');
+        var srcEl = doc.getElementById('source');
+        var nLines = srcEl.value.split('\n').length;
+        ok(!!gut && gut.children.length === nLines, '行号栏行数与源码一致（' + (gut ? gut.children.length : 0) + ' vs ' + nLines + '）');
+        ok(gut.children[0].textContent === '1', '第一行显示 1');
+        ok(gut.children[nLines - 1].textContent === String(nLines), '最后一行显示 ' + nLines);
+        ok(win.getComputedStyle(srcEl).lineHeight === win.getComputedStyle(gut).lineHeight,
+           '行号与文本行高一致（' + win.getComputedStyle(gut).lineHeight + '）');
+        ok(win.getComputedStyle(srcEl).paddingTop === win.getComputedStyle(gut).paddingTop, '顶部内边距一致');
+        // 增删行时行号自动跟随
+        srcEl.value = srcEl.value + '\n        NOP';
+        srcEl.dispatchEvent(new win.Event('input', { bubbles: true }));
+        ok(gut.children.length === nLines + 1, '新增一行后行号变为 ' + gut.children.length);
+        // 光标所在行高亮
+        srcEl.selectionStart = srcEl.selectionEnd = 0;
+        srcEl.dispatchEvent(new win.MouseEvent('click', { bubbles: true }));
+        ok(gut.children[0].classList.contains('cur'), '光标所在行（第 1 行）被高亮');
+        srcEl.selectionStart = srcEl.selectionEnd = srcEl.value.length;
+        srcEl.dispatchEvent(new win.KeyboardEvent('keyup', { bubbles: true }));
+        ok(gut.children[gut.children.length - 1].classList.contains('cur'), '光标移到最后一行时高亮跟随');
+        // 纵向滚动同步
+        srcEl.scrollTop = 40;
+        srcEl.dispatchEvent(new win.Event('scroll'));
+        ok(gut.scrollTop === srcEl.scrollTop, '滚动同步（行号 ' + gut.scrollTop + ' / 文本 ' + srcEl.scrollTop + '）');
+
+        // ---- 代码存放区：高度上限 + 横纵滚动条 ----
+        var longSrc = ['        ORG 0000H', '        LJMP START', '        ORG 0030H', 'START:  MOV SP,#60H'];
+        for (var q = 0; q < 30; q++) longSrc.push('L' + q + ':    MOV A,#0' + (q % 10) + 'H\n        ADD A,#0' + (q % 8) + 'H\n        MOV R' + (q % 8) + ',A');
+        longSrc.push('        SJMP $', '        END');
+        srcEl.value = longSrc.join('\n');
+        srcEl.dispatchEvent(new win.Event('input', { bubbles: true }));
+        doc.getElementById('btnAsm').click();
+        var wrapL = doc.querySelector('.listing-wrap');
+        var lst = doc.getElementById('listing');
+        var mh = win.getComputedStyle(wrapL).maxHeight;
+        ok(mh !== 'none' && parseFloat(mh) > 0, '代码存放区有高度上限（max-height=' + mh + '）');
+        ok(wrapL.clientHeight <= win.innerHeight * 0.55, '高度被限制在视口一半左右（' + wrapL.clientHeight + 'px / 视口 ' + win.innerHeight + 'px）');
+        ok(lst.scrollHeight > lst.clientHeight, '长程序出现纵向滚动条（' + lst.scrollHeight + ' > ' + lst.clientHeight + '）');
+        ok(win.getComputedStyle(lst).overflowY === 'auto' && win.getComputedStyle(lst).overflowX === 'auto',
+           '横纵滚动条均已启用（overflow=' + win.getComputedStyle(lst).overflowX + '/' + win.getComputedStyle(lst).overflowY + '）');
+        ok(win.getComputedStyle(srcEl).overflowX === 'auto' && win.getComputedStyle(srcEl).overflowY === 'auto',
+           '编辑器同样支持横向与纵向滚动');
+        // 缩窄容器 → 必须出现横向溢出，且表头跟随平移
+        var oldW = wrapL.style.width;
+        wrapL.style.width = '300px';
+        ok(lst.scrollWidth > lst.clientWidth, '窄容器下出现横向滚动（' + lst.scrollWidth + ' > ' + lst.clientWidth + '）');
+        lst.scrollLeft = 40;
+        lst.dispatchEvent(new win.Event('scroll'));
+        ok(/translateX\(-40px\)/.test(doc.getElementById('listingHead').style.transform || ''),
+           '横向滚动时表头跟随对齐（' + doc.getElementById('listingHead').style.transform + '）');
+        wrapL.style.width = oldW;
+        lst.scrollLeft = 0;
+        lst.dispatchEvent(new win.Event('scroll'));
+
+        // ---- 程序存储器：源码列完整显示（不省略号截断）+ 内容撑宽 + 横向滚动条 ----
+        srcEl.value = 'ORG 0000H\n        MOV A,#1     ; 这是一条很长的注释：用于验证源码列不会被省略号截断，而是靠横向滚动条查看完整内容\n        SJMP $\n        END';
+        srcEl.dispatchEvent(new win.Event('input', { bubbles: true }));
+        doc.getElementById('btnAsm').click();
+        var lst2 = doc.getElementById('listing');
+        var srcCell = lst2.querySelector('.listing-row .col-src');
+        ok(win.getComputedStyle(srcCell).textOverflow === 'clip', '源码列不再用省略号截断（text-overflow=' + win.getComputedStyle(srcCell).textOverflow + '）');
+        ok(lst2.scrollWidth > lst2.clientWidth + 4,
+           '长源码把清单撑宽并出现横向滚动条（' + lst2.scrollWidth + ' > ' + lst2.clientWidth + '）');
+        ok(srcCell.scrollWidth <= srcCell.offsetWidth + 1,
+           '源码单元格完整容纳整行文本（' + srcCell.scrollWidth + ' ≤ ' + srcCell.offsetWidth + '）');
+        var headAddr = doc.querySelector('.listing-head .col-addr');
+        var rowAddr = lst2.querySelector('.listing-row .col-addr');
+        ok(Math.abs(headAddr.getBoundingClientRect().width - rowAddr.getBoundingClientRect().width) < 1.5,
+           '表头与数据行共用同一套列宽（' + Math.round(headAddr.getBoundingClientRect().width) + ' vs ' + Math.round(rowAddr.getBoundingClientRect().width) + '）');
+        // 短程序不应无故出现横向滚动条
+        srcEl.value = 'ORG 0\nMOV A,#1\nSJMP $\nEND';
+        srcEl.dispatchEvent(new win.Event('input', { bubbles: true }));
+        doc.getElementById('btnAsm').click();
+        ok(lst2.scrollWidth <= lst2.clientWidth + 4,
+           '短程序不出现多余横向滚动条（' + lst2.scrollWidth + ' ≤ ' + lst2.clientWidth + '）');
+        lst2.scrollLeft = 0;
+        lst2.dispatchEvent(new win.Event('scroll'));
+
+        // ---- 上面三栏等高对齐，且中间栏内部不留空白 ----
+        var pEd = doc.querySelector('.panel-editor').getBoundingClientRect();
+        var pCd = doc.querySelector('.panel-code').getBoundingClientRect();
+        var pRg = doc.querySelector('.panel-regs').getBoundingClientRect();
+        ok(Math.abs(pEd.top - pCd.top) < 1 && Math.abs(pCd.top - pRg.top) < 1, '三栏顶端对齐');
+        ok(Math.abs(pEd.bottom - pCd.bottom) < 2 && Math.abs(pCd.bottom - pRg.bottom) < 2,
+           '三栏底端对齐（高度 ' + Math.round(pEd.height) + '/' + Math.round(pCd.height) + '/' + Math.round(pRg.height) + '）');
+        var cmWrap = doc.querySelector('.codemap-wrap').getBoundingClientRect();
+        ok(Math.abs(pCd.bottom - cmWrap.bottom) < 14,
+           '中间栏内部无空白（面板底 ' + Math.round(pCd.bottom) + ' vs 代码空间图底 ' + Math.round(cmWrap.bottom) + '）');
+        var editorH = doc.querySelector('.editor-wrap').getBoundingClientRect();
+        ok(editorH.bottom < pEd.bottom, '编辑器的文本域被拉伸填充（未超出面板）');
+        ok(win.getComputedStyle(doc.querySelector('.panel-editor')).minHeight === '0px', '编辑器面板不再有写死的最小高度');
+
+        // ---- 直接寻址 80H~FFH = SFR 的教学提示（用户最常见的困惑）----
+        doc.getElementById('source').value = 'ORG 0\nMOV A,#03H\nADD A,#05H\nMOV 0AAH,A\nSJMP $\nEND';
+        doc.getElementById('btnAsm').click();
+        var infos = doc.querySelectorAll('.msgbox .msg-info');
+        ok(infos.length === 1 && /特殊功能寄存器/.test(infos[0].textContent), '汇编时提示“直接地址 AAH 是 SFR 不是 RAM”');
+        for (var k = 0; k < 3; k++) doc.getElementById('btnStep').click();
+        var eff = doc.getElementById('curEffect').textContent;
+        ok(/WKTCL/.test(eff), '单步后说明写入的是 SFR WKTCL（实际：' + eff.slice(0, 40) + '…）');
+        ok(/内部 RAM 同地址/.test(eff), '并提醒内部 RAM 同地址格子不受影响');
+        ok(/08/.test(doc.querySelector('#grid-sfr .cell[data-a="170"]').textContent), 'SFR 视图 0AAH(WKTCL) = 08H');
+        ok(doc.querySelector('#grid-iram .cell[data-a="170"]').textContent.trim() === '00', '内部 RAM 0AAH 仍为 00H');
+
+        // 汇编错误路径
+        doc.getElementById('source').value = 'ORG 0\nMOV A,UNDEF\nSJMP 1000H\nEND';
+        doc.getElementById('btnAsm').click();
+        ok(doc.querySelectorAll('.msgbox .msg-err').length >= 2, '故意写错时报告汇编错误（' + doc.querySelectorAll('.msgbox .msg-err').length + ' 条）');
+        ok(/失败/.test(doc.getElementById('asmStatus').textContent), '状态条显示汇编失败');
+
+        // ---- 布局/滚动回归：内存面板必须完整可达（曾因 body height:100% 被裁掉且无法滚动）----
+        doc.querySelector('.tab[data-space="iram"]').click();   // 先切回内部 RAM 视图再做几何检查
+        var de = doc.documentElement;
+        ok(de.scrollHeight > de.clientHeight, '内容高于视口时页面可滚动（scrollHeight=' + de.scrollHeight + ' > clientHeight=' + de.clientHeight + '）');
+        var mempane = doc.querySelector('.mempane');
+        ok(mempane.scrollHeight <= mempane.clientHeight + 1, '内存面板未被裁切（内容 ' + mempane.scrollHeight + ' / 可见 ' + mempane.clientHeight + '）');
+        var last = doc.querySelector('#grid-iram .cell[data-a="255"]');
+        var rowF0 = doc.querySelector('#grid-iram .cell[data-a="240"]');
+        ok(!!last && !!rowF0, '内部 RAM 最后一行（F0H~FFH）已渲染');
+        var rect = last.getBoundingClientRect();
+        ok(rect.width > 0 && rect.height > 0, 'F0H 行格子有实际尺寸（' + Math.round(rect.width) + '×' + Math.round(rect.height) + '）');
+        var bottomInDoc = rect.bottom + win.scrollY;
+        ok(bottomInDoc > 0 && bottomInDoc <= de.scrollHeight + 1, 'F0H 行位于可滚动区域内（底部 ' + Math.round(bottomInDoc) + ' ≤ 文档高 ' + de.scrollHeight + '）');
+        win.scrollTo(0, de.scrollHeight);
+        var after = last.getBoundingClientRect().bottom;
+        ok(after > 0 && after <= win.innerHeight + 1, '滚动到底后能看到 F0H 行的最后一个格子（bottom=' + Math.round(after) + '，视口高 ' + win.innerHeight + '）');
+        win.scrollTo(0, 0);
+      } catch (e) {
+        fails.push('异常：' + e.message + '\n' + (e.stack || ''));
+        log.push('FAIL 异常：' + e.message);
+      }
+      finish();
+    }, 900);
+  });
+
+  function finish(extra) {
+    if (extra) { log.push('FAIL ' + extra); fails.push(extra); }
+    document.getElementById('result').textContent =
+      'UI-SELFTEST ' + (fails.length ? 'FAILED(' + fails.length + ')' : 'ALL-PASS') + '\n' + log.join('\n');
+  }
+})();
+</script>
+</body>
+</html>

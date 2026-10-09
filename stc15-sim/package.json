@@ -1,0 +1,13 @@
+{
+  "name": "stc15-sim",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "STC15F2K60S2 单片机汇编语言可视化模拟器（零依赖，浏览器界面）",
+  "scripts": {
+    "start": "node serve.mjs 8099",
+    "test": "node test/run-tests.mjs",
+    "test:cross": "node test/cross-check-opcodes.mjs",
+    "gen:sfr": "node tools/gen-sfr-data.mjs"
+  }
+}
