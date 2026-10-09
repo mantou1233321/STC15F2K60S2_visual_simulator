@@ -367,5 +367,8 @@ from the repository; (6) the project is provided **as is, without warranty**.
 
 ## 九、许可证
 
-**尚未指定**。若要公开使用，建议补一个 `LICENSE`（MIT / Apache-2.0 / GPL-3.0 均可），
-并把 `package.json` 的 `license` 字段对齐。
+本项目采用 **MIT 许可证**，详见仓库根目录 [`LICENSE`](../LICENSE)。可自由使用、修改、分发（含商用），
+只需保留版权声明与许可证原文。软件按「现状」提供、不附带任何担保；本项目由 AI 生成且
+**未在实物芯片上验证**（见第八节 AI 声明），正式使用前请自行复核。
+
+*Released under the MIT License — see [`LICENSE`](../LICENSE).*

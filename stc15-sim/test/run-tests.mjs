@@ -4,7 +4,12 @@
  * ========================================================================== */
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { STC } from './loader.mjs';
+
+/* 相对脚本自身定位仓库里的 research/（而不是 process.cwd()），
+   这样从仓库根目录或 stc15-sim/ 目录运行都能找到权威数据 */
+const RESEARCH_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'research');
 
 let passed = 0, failed = 0;
 const failures = [];
@@ -204,8 +209,8 @@ test('汇编：错误检测（越界 rel、未知指令、未定义符号）', (
   ok(/范围/.test(r.errors[0].msg), 'rel 越界错误信息应说明范围');
 });
 test('指令表：长度/机器周期与外部权威表逐条一致（Keil+Actel+Atmel+Intel 多源）', () => {
-  const jf = path.join(process.cwd(), '..', 'research', '8051-opcodes.json');
-  if (!fs.existsSync(jf)) { console.log('    （未找到 research/8051-opcodes.json，跳过）'); return; }
+  const jf = path.join(RESEARCH_DIR, '8051-opcodes.json');
+  if (!fs.existsSync(jf)) { console.log('    ⚠ 跳过：未找到 ' + jf + '（只复制了 stc15-sim/ 子目录时属正常）'); return; }
   const ref = JSON.parse(fs.readFileSync(jf, 'utf8'));
   const list = ref.opcodes || ref;
   eq(list.length, 256, '参考表条目数');

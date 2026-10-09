@@ -2,6 +2,10 @@
 
 ### STC15F2K60S2 Assembly Visual Simulator
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Dependencies: none](https://img.shields.io/badge/dependencies-none-brightgreen.svg)
+![Tests: 54 unit + 153 browser](https://img.shields.io/badge/tests-54%20unit%20%2B%20153%20browser-blue.svg)
+
 **中文** | [English](#english)
 
 > **AI 声明**：本项目的全部代码、测试与文档均由 **AI 编码代理**生成（人类负责提需求、评审与反馈缺陷）。
@@ -150,8 +154,13 @@ node stc15-sim/test/cross-check-opcodes.mjs   # 与外部权威指令表逐条�
 
 ## 许可证
 
-**尚未指定**。若打算公开使用，建议补一个 `LICENSE`（MIT / Apache-2.0 / GPL-3.0 均可），
-并把 `stc15-sim/package.json` 的 `license` 字段对齐。
+本项目采用 **MIT 许可证** —— 详见 [`LICENSE`](LICENSE)。
+
+你可以自由使用、修改、分发（含商用），只需保留版权声明与许可证原文。软件按「现状」提供、不附带任何担保；
+由于本项目由 AI 生成且**未在实物芯片上验证**（见 [AI 声明](#ai-声明)），用于正式场合前请自行复核。
+
+> 本仓库不含任何第三方源码或手册（见 [不在仓库里的东西](#不在仓库里的东西有意排除)）；
+> `research/` 下为事实性数据表与调研笔记，第三方资料的出处列在 `research/*.md` 中。
 
 ---
 
@@ -307,5 +316,14 @@ results and pushed iterations based on real-world use. Specifically:
 
 ## License
 
-**Not chosen yet.** If you intend to publish or reuse this, add a `LICENSE` (MIT / Apache-2.0 / GPL-3.0)
-and align the `license` field in `stc15-sim/package.json`.
+Released under the **MIT License** — see [`LICENSE`](LICENSE).
+
+You are free to use, modify and redistribute it (including commercially) as long as the copyright notice
+and the license text are preserved. The software is provided **"as is", without warranty**; since this
+project is AI-generated and has **not been validated against real hardware**
+(see the [AI disclosure](#ai-disclosure)), please verify it yourself before relying on it.
+
+> This repository contains no third-party source code or manuals
+> (see [What is deliberately **not** in this repository](#what-is-deliberately-not-in-this-repository));
+> the data under `research/` consists of factual tables and research notes whose sources are listed
+> in `research/*.md`.

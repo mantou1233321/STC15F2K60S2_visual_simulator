@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "description": "STC15F2K60S2 单片机汇编语言可视化模拟器（零依赖，浏览器界面）",
+  "license": "MIT",
   "scripts": {
     "start": "node serve.mjs 8099",
     "test": "node test/run-tests.mjs",

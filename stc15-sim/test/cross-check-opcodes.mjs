@@ -7,31 +7,41 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { STC } from './loader.mjs';
 
-const raw = path.join(process.cwd(), '..', 'research', 'raw');
-const research = path.join(process.cwd(), '..', 'research');
+const here = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.resolve(here, '..', '..');       // 无论从哪个工作目录运行都正确
+const raw = path.join(repoRoot, 'research', 'raw');
+const research = path.join(repoRoot, 'research');
 const mine = STC.opcodes.byOp;
 const H = n => n.toString(16).toUpperCase().padStart(2, '0');
 
 let bad = 0, checked = 0;
 const lenDiff = [], cycDiff = [], mnDiff = [];
 
-/* ---------------- 1) at51：长度 + 助记符 ---------------- */
-const rs = fs.readFileSync(path.join(raw, 'opcode-info-table_at51.rs'), 'utf8');
-const pairs = [...rs.matchAll(/\(\s*(\d+)\s*,\s*InsType::(\w+)\s*\)/g)].map(m => ({ len: +m[1], type: m[2] }));
-console.log('at51 条目数：', pairs.length);
+/* ---------------- 1) at51：长度 + 助记符 ----------------
+   该文件位于 research/raw/（第三方资料，不入库），本地缺失时自动跳过这一节 */
 let at51Bad = 0;
-for (let op = 0; op < Math.min(256, pairs.length); op++) {
-  const e = mine[op], p = pairs[op];
-  checked++;
-  if (!e) { if (p.type !== 'Resrv') { (console.log(`✗ ${H(op)} 我表里未定义，at51 为 ${p.type}(${p.len})`), at51Bad++); } continue; }
-  if (e.len !== p.len) { console.log(`✗ ${H(op)} ${e.mnemonic}: 长度 我=${e.len} at51=${p.len}`); at51Bad++; }
-  if (e.mnemonic.replace(/[^A-Z]/g, '').toLowerCase() !== p.type.toLowerCase()) {
-    mnDiff.push(`${H(op)} 我=${e.mnemonic} at51=${p.type}`);
+const at51File = path.join(raw, 'opcode-info-table_at51.rs');
+if (fs.existsSync(at51File)) {
+  const rs = fs.readFileSync(at51File, 'utf8');
+  const pairs = [...rs.matchAll(/\(\s*(\d+)\s*,\s*InsType::(\w+)\s*\)/g)].map(m => ({ len: +m[1], type: m[2] }));
+  console.log('at51 条目数：', pairs.length);
+  for (let op = 0; op < Math.min(256, pairs.length); op++) {
+    const e = mine[op], p = pairs[op];
+    checked++;
+    if (!e) { if (p.type !== 'Resrv') { (console.log(`✗ ${H(op)} 我表里未定义，at51 为 ${p.type}(${p.len})`), at51Bad++); } continue; }
+    if (e.len !== p.len) { console.log(`✗ ${H(op)} ${e.mnemonic}: 长度 我=${e.len} at51=${p.len}`); at51Bad++; }
+    if (e.mnemonic.replace(/[^A-Z]/g, '').toLowerCase() !== p.type.toLowerCase()) {
+      mnDiff.push(`${H(op)} 我=${e.mnemonic} at51=${p.type}`);
+    }
   }
+  console.log(`at51 长度比对：检查 ${checked} 条，不一致 ${at51Bad} 条` + (at51Bad ? '' : ' ✓'));
+} else {
+  console.log('at51 长度表不在本地（research/raw/ 为不入库的第三方资料），跳过该节；');
+  console.log('下面用仓库内自带的 research/8051-opcodes.json 完成长度/周期/助记符比对。');
 }
-console.log(`at51 长度比对：检查 ${checked} 条，不一致 ${at51Bad} 条`);
 bad += at51Bad;
 
 /* ---------------- 2) research/8051-opcodes.json：长度 + 周期 + 助记符 ---------------- */
